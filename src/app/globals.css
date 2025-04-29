@@ -1,26 +1,16 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
+  background: rgb(220, 229, 220);
   color: var(--foreground);
+  padding: 1rem;
+  padding-bottom: 6rem;
+  padding-top: 5rem;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* instalasi 
+
+npm install clsx */
+/* npm install @heroicons/react */
