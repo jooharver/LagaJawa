@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import Navbar from "./components/Navbar"; // pakai alias kalau sudah ada
+import Navbar from "./components/Navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning> {/* BONUS #1: Suppress hydration warning */}
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         {/* FontAwesome for icons */}
         <link

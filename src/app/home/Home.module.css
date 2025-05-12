@@ -1,0 +1,249 @@
+/* Base styles */
+.homepage {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    color: #1E1E1E;
+  }
+  
+  /* Hero Container */
+  .heroContainer {
+    min-height: 100vh;
+    max-height: 10vh;
+    width: 100%;
+    background: url(/images/lapangan7.jpg) center center / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .heroTextContainer {
+    z-index: 5;
+    padding: 2rem;
+  }
+  
+  .judulHero {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-shadow: 0 0 3px;
+    position: center;
+    text-align: center;
+    z-index: -1;
+    margin: 0;
+  }
+  
+  .deskripsiHero {
+    z-index: 0;
+    color: #e0e0e0;
+    margin-top: -1.5rem;
+    position: center;
+    text-align: center;
+  }
+  
+  /* Banner Styles */
+  .banner {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -50px;
+  }
+  
+  .product {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    bottom: 17%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    transition: 0.7s;
+    --left: 0px;
+    display: flex;
+  }
+  
+  .ball {
+    background:
+      var(--url) var(--left) 0,
+      url('/images/ball-sphere.png');
+    background-size: auto 100%;
+    width: 120px;
+    bottom: 0%;
+    aspect-ratio: 1/1;
+    background-blend-mode: multiply;
+    mask-image: url('/images/ball-sphere.png');
+    mask-size: auto 100%;
+    transition: 0.7s;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+  }
+  
+  .product:hover {
+    --left: -844px;
+    transform: translateX(-50%) translateY(-120px) scale(120%);
+  }
+  
+  .rock {
+    position: absolute;
+    inset: 0 0 0 0;
+    pointer-events: none;
+  }
+  
+  .rock img {
+    position: absolute;
+    transition: 0.7s;
+  }
+  
+  .rock img:nth-child(1) {
+    height: 96px;
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    transition: 0.7s;
+    z-index: 2;
+  }
+  
+  .product:hover ~ .rock img:nth-child(1) {
+    transform: translateX(-50%) translateY(20px) scale(85%);
+  }
+  
+  .rock img:nth-child(2) {
+    height: 350px;
+    width: 400px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transition: 0.7s;
+    z-index: 1;
+  }
+  
+  .product:hover ~ .rock img:nth-child(2) {
+    transform: translateX(-100px) translateY(20px) scale(80%);
+  }
+  
+  .rock img:nth-child(3) {
+    height: 350px;
+    width: 400px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transition: 0.7s;
+    z-index: 1;
+  }
+  
+  .product:hover ~ .rock img:nth-child(3) {
+    transform: translateX(100px) translateY(20px) scale(80%);
+  }
+  
+  .ball:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .product:hover .ball:nth-child(2) {
+    opacity: 1;
+  }
+  
+  .bookNow {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    border: 2px solid white;
+    color: white;
+    text-decoration: none;
+    background-color: rgba(78, 78, 78, 0.4);
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 8px;
+    z-index: 999; 
+    pointer-events: auto;
+    transition: 0.7s;
+  }
+  
+  .product:hover .bookNow {
+    transform: translate(-50%, -50%) translateY(120px);
+    background-color: #ffffff8e;
+    color: #033d0d;
+    border: 3px solid #fff;
+  }
+  
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .judulHero {
+      margin-top: 20%;
+      font-size: 2rem;
+    }
+    
+    .deskripsiHero {
+      font-size: 1rem;
+    }
+    
+    .heroContainer {
+      background-size: cover;
+    }
+  
+    .product {
+      width: 250px;
+      height: 250px;
+      bottom: 120px;
+    }
+  
+    .ball {
+      width: 80px;
+      bottom: 122px;
+    }
+  
+    .rock img:nth-child(1) {
+      width: 150px;
+      height: auto;
+      bottom: 200px;
+    }
+  
+    .rock img:nth-child(2),
+    .rock img:nth-child(3) {
+      width: 180px;
+      height: auto;
+      bottom: 200px;
+    }
+  
+    .product:hover ~ .rock img:nth-child(2) {
+      transform: translateX(-40px) translateY(20px) scale(80%);
+    }
+    
+    .product:hover ~ .rock img:nth-child(3) {
+      transform: translateX(40px) translateY(20px) scale(80%);
+    }
+  
+    .bookNow {
+      font-size: 1rem;
+      padding: 10px 20px;
+      top: 85%;
+    }
+  
+    .product:hover .bookNow {
+      transform: translate(-50%, -50%) translateY(85px);
+      background-color: #ffffff8e;
+      color: #033d0d;
+      border: 3px solid #fff;
+    }
+  }
+  
+  /* Animation Classes */
+  .show {
+    opacity: 1;
+    transform: translateY(0);
+  }
