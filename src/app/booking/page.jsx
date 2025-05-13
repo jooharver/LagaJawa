@@ -132,10 +132,12 @@ export default function BookingPage() {
     <div className={styles.container}>
       {/* Promosi */}
       <section className={styles.promo}>
-        <TypingText texts={[
-          'Booking bulanan atau event?',
-          'Hubungi kami untuk diskon khusus!',
-        ]} />
+        <div className={styles.typingText}>
+          <TypingText texts={[
+            'Booking bulanan atau event?',
+            'Hubungi kami untuk diskon khusus!',
+          ]} />
+        </div>
         <button className={styles.contactBtn}>Hubungi Kami</button>
       </section>
 

@@ -116,22 +116,27 @@
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
     .container {
-      margin-left: 15px;
-      margin-right: 15px;
+      margin-left: 5px;
+      margin-right: 5px;
       padding: 15px; /* Adjust padding for smaller screens */
     }
   
     .title {
       font-size: 20px; /* Adjust title font size */
     }
-  
-    .bookingDetails p {
-      font-size: 14px; /* Adjust text size for mobile */
+
+    .cardTimer h2{
+      font-size: 18px;
     }
   
+    .bookingDetails p {
+      font-size: 0.9rem !important;
+    }
+    
     .qrisImage {
       width: 150px;
-      height: 150px; /* Make QR image smaller for mobile */
+      height: 150px;
+      margin-bottom: -10px;
     }
   
     .cardTimer {
