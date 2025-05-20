@@ -5,15 +5,15 @@ import { motion } from 'framer-motion';
 import styles from './Navbar.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaHome, FaUser, FaShoppingBag, FaImages, FaCog } from 'react-icons/fa';
+import { FaHome, FaUser, FaShoppingBag, FaCalendarAlt, FaNewspaper } from 'react-icons/fa';
 
 // Tambahkan label untuk mobile menu
 const mobileMenu = [
   { icon: FaHome, label: 'Home', href: '/' },
-  { icon: FaUser, label: 'Profile', href: '/profile' },
-  { icon: FaShoppingBag, label: 'Booking', href: '/booking' },
-  { icon: FaImages, label: 'Event', href: '/event' },
-  { icon: FaCog, label: 'Setting', href: '/setting' },
+  { icon: FaShoppingBag, label: 'Activities', href: '/activities' },
+  { icon: FaNewspaper, label: 'News', href: '/news' },
+  { icon: FaCalendarAlt, label: 'Booking', href: '/booking' },
+  { icon: FaUser, label: 'Account', href: '/setting' },
 ];
 
 export default function Navbar() {
@@ -25,10 +25,10 @@ export default function Navbar() {
 
   const menu = [
     { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Services', href: '/services' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'Booking', href: '/booking' },  // Menambahkan menu Booking untuk desktop
+    { label: 'Activities', href: '/activities' },
+    { label: 'News', href: '/news' },
+    { label: 'Booking', href: '/booking' },
+    { label: 'Account', href: '/setting' }  // Menambahkan menu Booking untuk desktop     // Menambahkan menu Event untuk desktop
   ];
 
   useEffect(() => {
