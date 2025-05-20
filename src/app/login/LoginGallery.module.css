@@ -1,0 +1,306 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+.container h1 {
+  font-size: 2rem;
+  margin: 1rem 0;
+  text-align: center;
+  font-family: Poppins, sans-serif;
+   
+}
+
+.container h2{
+  font-size: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+  font-family: sans-serif, sans-serif;
+}
+
+.loginSection {
+  flex: 1;
+  max-height: 100vh;  
+  max-width: 500px;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+  order: 2;
+}
+
+.gallerySection {
+  flex: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:url('/images/card-texture2.jpg');
+  color: white;
+  order: 1;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* Form styles */
+.form {
+  width: 100%;
+  max-width: 400px; /* Match this to your button's effective width */
+  margin: 0 auto; /* Centers the form */
+  padding: 1.5rem; /* Add some internal spacing */
+  box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  width: 100%; /* Ensure form groups take full form width */
+}
+
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.875rem 1.25rem; /* Slightly larger than button for better text input */
+  border: 2px solid #e2e8f0; /* More defined border */
+  border-radius: 8px; /* Matches modern button radius */
+  font-size: 1rem;
+  line-height: 1.5; /* Better text vertical alignment */
+  background-color: #f8fafc; /* Subtle off-white background */
+  transition: all 0.3s ease; /* Smooth transitions for all properties */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle depth */
+  box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+/* Focus state */
+.formGroup input:focus {
+  border-color: #416a48; /* Your button color */
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(65, 106, 72, 0.1); /* Matching focus ring */
+  outline: none;
+}
+.button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #416a48;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button:hover {
+  background: #0c771d;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+/* Optional: Add a subtle pulse animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Apply the pulse animation when not hovering */
+.button:not(:hover) {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* For when the button is disabled */
+.button:disabled {
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+
+
+
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  color: #e74c3c;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background: #fdecea;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  color: #666;
+}
+
+.footerLinks a {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.footerLinks a:hover {
+  text-decoration: underline;
+}
+
+/* Slider styles */
+.sliderContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 500px;
+}
+
+.slide {
+  min-width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.slideContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+}
+
+.slideContent h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.slideContent p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.sliderControls {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.controlButton {
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.controlButton:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.activeDot {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .loginSection,
+  .gallerySection {
+    max-width: 100%;
+    flex: none;
+  }
+  
+  .gallerySection {
+    padding: 2rem 1rem;
+  }
+  
+  .slider {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    height: 300px;
+  }
+  
+  .slideContent {
+    padding: 1.5rem;
+  }
+  .container{
+    padding-bottom: 70px;
+  }
+  
+  .slideContent h3 {
+    font-size: 1.2rem;
+  }
+}
