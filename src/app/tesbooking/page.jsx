@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './Booking.module.css';
+import styles from './TesBooking.module.css';
 
 const courts = ['Court 1', 'Court 2', 'Court 3', 'Court 4', 'Court 5'];
 const times = Array.from({ length: 18 }, (_, i) => `${6 + i}:00`);
@@ -54,7 +54,7 @@ function encodeBookingData(data) {
   return encodeURIComponent(btoa(JSON.stringify(data)));
 }
 
-export default function BookingPage() {
+export default function TesBookingPage() {
   const router = useRouter();
   const [activeDate, setActiveDate] = useState(0);
   const [selectedSlots, setSelectedSlots] = useState({});
@@ -167,7 +167,7 @@ export default function BookingPage() {
     };
   
     const encoded = encodeBookingData(payload);
-    router.push(`/pembayaran?data=${encoded}`);
+    router.push(`/tespembayaran?data=${encoded}`);
   };
   
 

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useState, useMemo, useEffect } from 'react';
-import styles from './Pembayaran.module.css';
+import styles from './TesPembayaran.module.css';
 
 function decodeBookingData(encoded) {
   try {
@@ -23,7 +23,7 @@ const ensureHmsFormat = (timeStr) => {
   return `${h}:${m}:${s}`;
 };
 
-export default function PembayaranPage() {
+export default function TesPembayaranPage() {
   const searchParams = useSearchParams();
   const encodedData = searchParams.get('data');
   const rawBookingData = useMemo(() => decodeBookingData(encodedData), [encodedData]);
@@ -55,7 +55,7 @@ export default function PembayaranPage() {
     const endHour = (startHour + duration) % 24;
     return formatHourToHms(endHour);
   };
-
+  
   const handleBayar = async () => {
     setLoading(true);
     try {
@@ -65,36 +65,7 @@ export default function PembayaranPage() {
         .map(ensureHmsFormat)
         .sort();
   
-      const paymentPayload = {
-        payment_method: paymentMethod,
-        time_slots: allTimeSlots,
-      };
-  
-      console.log('Mengirim data payment:', paymentPayload);
-  
-      const paymentRes = await fetch('http://localhost:8000/api/payments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(paymentPayload),
-      });
-  
-      const paymentText = await paymentRes.text();
-      console.log('Payment API response status:', paymentRes.status);
-      console.log('Payment API response text:', paymentText);
-  
-      let paymentJson;
-      try {
-        paymentJson = JSON.parse(paymentText);
-      } catch (e) {
-        throw new Error(`Gagal parsing JSON dari response pembayaran: ${e.message}`);
-      }
-  
-      if (!paymentRes.ok) throw new Error(paymentJson.message || 'Gagal membuat pembayaran');
-  
-      const paymentId = paymentJson.data.id_payment;
-      if (!paymentId) throw new Error('payment_id tidak ditemukan dari response pembayaran');
-  
-      // Lanjut ke booking per court
+      // Group booking per court dengan time slots
       const groupedBookings = {};
       for (const b of bookings) {
         const courtId = b.court_id;
@@ -102,38 +73,46 @@ export default function PembayaranPage() {
         b.time_slots.forEach(slot => groupedBookings[courtId].add(slot));
       }
   
-      const bookingRequests = Object.entries(groupedBookings).map(async ([courtId, slotSet]) => {
-        const timeSlotsHms = Array.from(slotSet).map(ensureHmsFormat).sort();
+      // Buat array booking detail yang dikirim ke backend
+      const bookingDetails = Object.entries(groupedBookings).map(([courtId, slotSet]) => ({
+        court_id: parseInt(courtId, 10),
+        time_slots: Array.from(slotSet).map(ensureHmsFormat).sort(),
+      }));
   
-        const bookingPayload = {
-          requester_id: 1, // nanti ganti sesuai user login
-          court_id: parseInt(courtId, 10),
-          booking_date: date,
-          time_slots: timeSlotsHms,
-          payment_id: paymentId, // pastikan ini ada di payload
-        };
+      const transactionPayload = {
+        requester_id: 1, // ganti sesuai user login nanti
+        booking_date: date,
+        payment_method: paymentMethod,
+        bookings: bookingDetails,
+        total_price: totalPrice,
+      };
   
-        const res = await fetch('http://localhost:8000/api/bookings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bookingPayload),
-        });
+      console.log('Mengirim transaksi:', transactionPayload);
   
-        const text = await res.text();
-        console.log(`Booking API response status (Court ${courtId}):`, res.status);
-        console.log(`Booking API response text (Court ${courtId}):`, text);
-  
-        try {
-          const json = JSON.parse(text);
-          if (!res.ok) throw new Error(`Gagal booking Court ${courtId}: ${json.message || text}`);
-          return json;
-        } catch {
-          throw new Error(`Response bukan JSON dari booking Court ${courtId}: ${text}`);
-        }
+      const res = await fetch('http://localhost:8000/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transactionPayload),
       });
   
-      await Promise.all(bookingRequests);
-      alert('Booking berhasil!');
+      const text = await res.text();
+      console.log('Response API transaksi status:', res.status);
+      console.log('Response API transaksi text:', text);
+  
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch (e) {
+        throw new Error(`Gagal parsing JSON dari response transaksi: ${e.message}`);
+      }
+  
+      if (!res.ok) throw new Error(json.message || 'Gagal melakukan transaksi');
+  
+      alert('Transaksi berhasil!');
+  
+      // Jika mau redirect ke halaman lain, bisa di sini
+      // router.push('/somepage');
+  
     } catch (error) {
       alert(`Terjadi kesalahan: ${error.message}`);
     } finally {
