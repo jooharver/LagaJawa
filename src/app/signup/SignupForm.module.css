@@ -1,0 +1,179 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  padding: 2.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  color: #2d3748;
+  font-size: 1.75rem;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.header p {
+  color: #718096;
+  font-size: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.formGroup input {
+  padding: 0.875rem 1rem;
+  border: 2px solid #edf2f7;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.formGroup input:focus {
+  border-color: #4299e1;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  outline: none;
+}
+
+.errorInput {
+  border-color: #fc8181 !important;
+  background-color: #fff5f5 !important;
+}
+
+.errorText {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.errorMessage {
+  color: #e53e3e;
+  background-color: #fff5f5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  border: 1px solid #fed7d7;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #416a48 0%, #3182ce 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, #3182ce 0%, #416a48 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+/* Optional: Add a subtle pulse animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Apply the pulse animation when not hovering */
+.submitButton:not(:hover) {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* For when the button is disabled */
+.submitButton:disabled {
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.submitButton:disabled {
+  background: #a0aec0;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: #4299e1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
