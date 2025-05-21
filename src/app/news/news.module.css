@@ -1,0 +1,127 @@
+.container {
+  max-width: 900px;
+  margin: 5rem auto 0 auto;  /* Atur margin atas 5rem, kiri-kanan auto supaya center */
+  padding: 2rem;
+  text-align: center;
+}
+
+
+.filterButtons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; /* agar tombol wrap di layar kecil */
+  position: center;
+  justify-content: center; /* supaya tombol ada di tengah */
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 6px;
+  white-space: nowrap; /* agar teks tombol tidak pecah */
+}
+
+.active {
+  background: #0c711d;
+  color: white;
+  border-color: #0070f3;
+}
+
+.newsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.newsItem {
+  display: flex;
+  justify-content: center; /* container tengah horizontal */
+  gap: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Container gambar + tombol dalam kolom supaya tombol ada di bawah gambar */
+.imageButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* supaya tombol & gambar sejajar tengah */
+  gap: 12px;
+  flex-shrink: 0; /* supaya tidak mengecil */
+  width: 150px; /* sesuaikan dengan lebar gambar */
+}
+
+.newsImage {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Konten teks */
+.newsContent {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+
+.meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.5rem 0;
+}
+
+/* Tombol di desktop tetap sesuai imageButtonWrapper */
+.detailButton {
+  padding: 8px 16px;
+  background-color: #0c711d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%; /* tombol full lebar di container */
+}
+
+.detailButton:hover {
+  background-color: #ffffff;
+  color: #0c711d;
+  border: 1px solid #0c711d;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+/* MEDIA QUERY MOBILE */
+@media (max-width: 600px) {
+  .newsItem {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .imageButtonWrapper {
+    width: 100%;
+  }
+
+  .newsImage {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .detailButton {
+    width: fit-content;
+    margin: 16px auto 0;
+  }
+
+  .newsContent {
+    width: 100%;
+  }
+}
