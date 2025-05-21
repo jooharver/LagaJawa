@@ -3,6 +3,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './Booking.module.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
+
 
 const courts = ['Court 1', 'Court 2', 'Court 3', 'Court 4', 'Court 5'];
 const times = Array.from({ length: 18 }, (_, i) => `${6 + i}:00`);
@@ -137,19 +142,48 @@ export default function BookingPage() {
       })
       .finally(() => setLoading(false));
   }, [activeDate]);
-  
-  const handlePembayaran = () => {
+
+  const handlePembayaran = async () => {
     if (selectedKeys.length === 0) return;
-  
+
     const selectedDate = dates[activeDate].fullDate;
     const grouped = {};
-  
+
     for (const key of selectedKeys) {
       const [row, col] = key.split('-').map(Number);
       if (!grouped[col]) grouped[col] = [];
       grouped[col].push(row);
     }
-  
+
+    const selectedCourtCount = Object.keys(grouped).length;
+
+    if (selectedCourtCount > 1) {
+      await MySwal.fire({
+        iconHtml: '⚠️',
+        title: '<strong style="color:#d33">Oops!</strong>',
+        html: '<p style="font-size:16px; color:#555">Anda hanya bisa memesan <b>satu lapangan</b> dalam satu transaksi.<br/></p>',
+        showCloseButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'OK, Saya mengerti',
+        confirmButtonColor: 'rgb(17, 169, 114)',
+        background: '#fff',
+        backdrop: `
+          rgba(0,0,123,0.4)
+          url("/images/animated-warning.gif")
+          left top
+          no-repeat
+        `,
+        showClass: {
+          popup: 'swal2-show swal2-animate-slide-in'
+        },
+        hideClass: {
+          popup: 'swal2-hide swal2-animate-slide-out'
+        }
+      });
+      return;
+    }
+
+    // lanjutkan ke pembayaran seperti biasa
     const bookingDetails = Object.entries(grouped).map(([col, rows]) => {
       const sortedRows = rows.sort((a, b) => a - b);
       const time_slots = sortedRows.map(r => times[r]);
@@ -159,16 +193,49 @@ export default function BookingPage() {
         time_slots,
       };
     });
-  
+
     const payload = {
       date: selectedDate,
       bookings: bookingDetails,
       totalPrice
     };
-  
+
     const encoded = encodeBookingData(payload);
     router.push(`/pembayaran?data=${encoded}`);
   };
+
+  // const handlePembayaran = () => {
+  //   if (selectedKeys.length === 0) return;
+  
+  //   const selectedDate = dates[activeDate].fullDate;
+  //   const grouped = {};
+  
+  //   for (const key of selectedKeys) {
+  //     const [row, col] = key.split('-').map(Number);
+  //     if (!grouped[col]) grouped[col] = [];
+  //     grouped[col].push(row);
+  //   }
+  
+  //   const bookingDetails = Object.entries(grouped).map(([col, rows]) => {
+  //     const sortedRows = rows.sort((a, b) => a - b);
+  //     const time_slots = sortedRows.map(r => times[r]);
+  //     return {
+  //       court: courts[col],
+  //       court_id: parseInt(col, 10) + 1,
+  //       time_slots,
+  //     };
+  //   });
+  
+  //   const payload = {
+  //     date: selectedDate,
+  //     bookings: bookingDetails,
+  //     totalPrice
+  //   };
+  
+  //   const encoded = encodeBookingData(payload);
+  //   router.push(`/pembayaran?data=${encoded}`);
+  // };
+  
   
 
   return (
