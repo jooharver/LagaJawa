@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './Booking.module.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-const courts = ['Court 1', 'Court 2', 'Court 3', 'Court 4', 'Court 5'];
+const MySwal = withReactContent(Swal);
+
 const times = Array.from({ length: 18 }, (_, i) => `${6 + i}:00`);
 
 const dates = Array.from({ length: 7 }, (_, i) => {
@@ -21,8 +24,6 @@ const dates = Array.from({ length: 7 }, (_, i) => {
     fullDate: date.toISOString().split('T')[0],
   };
 });
-
-const PRICE_PER_SLOT = 100_000;
 
 function TypingText({ texts }) {
   const [displayedText, setDisplayedText] = useState('');
@@ -60,6 +61,8 @@ export default function BookingPage() {
   const [selectedSlots, setSelectedSlots] = useState({});
   const [bookedSlots, setBookedSlots] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [courts, setCourts] = useState([]);
+  const [priceMap, setPriceMap] = useState({});
   const [animatedTotal, setAnimatedTotal] = useState(0);
   const prevTotalRef = useRef(0);
 
@@ -73,10 +76,23 @@ export default function BookingPage() {
     }));
   };
 
-  const selectedKeys = Object.keys(selectedSlots).filter(k => selectedSlots[k]);
-  const selectedCount = selectedKeys.length;
-  const totalPrice = selectedCount * PRICE_PER_SLOT;
+  const selectedKeys = useMemo(() => (
+    Object.keys(selectedSlots).filter(k => selectedSlots[k])
+  ), [selectedSlots]);
 
+  const totalPrice = useMemo(() => {
+    return selectedKeys.reduce((sum, key) => {
+      const [rowIdx, colIdx] = key.split('-').map(Number);
+      const courtId = courts[colIdx]?.id_court;
+      const courtPrice = priceMap[courtId];
+  
+      // Konversi ke number sebelum dijumlahkan
+      const priceNumber = courtPrice ? parseFloat(courtPrice) : 0;
+  
+      return sum + priceNumber;
+    }, 0);
+  }, [selectedKeys, courts, priceMap]);
+  
   useEffect(() => {
     const duration = 350;
     const start = prevTotalRef.current;
@@ -99,9 +115,34 @@ export default function BookingPage() {
   }, [totalPrice]);
 
   useEffect(() => {
+    fetch('http://localhost:8000/api/courts')
+      .then(res => res.json())
+      .then(result => {
+        console.log('Response dari API courts:', result);
+  
+        let courtsData = result.data.data || result.data;
+        
+        // Urutkan courtsData berdasarkan id_court ascending
+        courtsData = courtsData.sort((a, b) => a.id_court - b.id_court);
+        console.log('Data lapangan courtsData setelah diurutkan:', courtsData);
+  
+        setCourts(courtsData);
+  
+        const map = {};
+        courtsData.forEach(court => {
+          map[court.id_court] = court.price_per_hour;
+        });
+        setPriceMap(map);
+      })
+      .catch(err => console.error('Gagal ambil data lapangan:', err));
+  }, []);
+  
+  
+
+  useEffect(() => {
     const selectedDate = dates[activeDate].fullDate;
     setLoading(true);
-  
+
     fetch(`/api/bookings?booking_date=${selectedDate}`)
       .then(res => res.json())
       .then(result => {
@@ -111,24 +152,20 @@ export default function BookingPage() {
           setBookedSlots([]);
           return;
         }
-  
+
         const booked = [];
-  
         bookings.forEach((booking) => {
-          const colIdx = booking.court_id - 1;
-  
-          // booking.time_slots = array of strings, eg ['06:00', '07:00', '08:00']
+          const colIdx = courts.findIndex(c => c.id_court === booking.court_id);
           booking.time_slots.forEach(timeSlot => {
             const hour = parseInt(timeSlot.split(':')[0], 10);
-            const rowIdx = hour - 6; // karena times mulai dari jam 6:00
-  
+            const rowIdx = hour - 6;
             if (rowIdx >= 0 && rowIdx < times.length) {
               const slotKey = `${rowIdx}-${colIdx}`;
               booked.push(slotKey);
             }
           });
         });
-  
+
         setBookedSlots(booked);
       })
       .catch(err => {
@@ -136,40 +173,47 @@ export default function BookingPage() {
         setBookedSlots([]);
       })
       .finally(() => setLoading(false));
-  }, [activeDate]);
-  
+  }, [activeDate, courts]);
+
   const handlePembayaran = () => {
     if (selectedKeys.length === 0) return;
-  
+
     const selectedDate = dates[activeDate].fullDate;
     const grouped = {};
-  
+
     for (const key of selectedKeys) {
       const [row, col] = key.split('-').map(Number);
       if (!grouped[col]) grouped[col] = [];
       grouped[col].push(row);
     }
-  
+
     const bookingDetails = Object.entries(grouped).map(([col, rows]) => {
       const sortedRows = rows.sort((a, b) => a - b);
       const time_slots = sortedRows.map(r => times[r]);
+      const duration = time_slots.length;
+      const courtId = courts[col]?.id_court;
+      const pricePerHour = parseFloat(priceMap[courtId]) || 0;
+      const amount = duration * pricePerHour;
+    
       return {
-        court: courts[col],
-        court_id: parseInt(col, 10) + 1,
+        court: courts[col]?.name,
+        court_id: courtId,
         time_slots,
+        amount,
+        type: courts[col]?.type,
       };
     });
-  
+    
+
     const payload = {
       date: selectedDate,
       bookings: bookingDetails,
-      totalPrice
+      totalPrice,
     };
-  
+
     const encoded = encodeBookingData(payload);
     router.push(`/pembayaran?data=${encoded}`);
   };
-  
 
   return (
     <div className={styles.container}>
@@ -201,7 +245,7 @@ export default function BookingPage() {
           <div className={styles.headerRow}>
             <div className={styles.timeColumn}></div>
             {courts.map((court, index) => (
-              <div key={index} className={styles.courtHeader}>{court}</div>
+              <div key={index} className={styles.courtHeader}>{court.name}</div>
             ))}
           </div>
           {times.map((time, rowIdx) => (
@@ -211,9 +255,6 @@ export default function BookingPage() {
                 const slotKey = `${rowIdx}-${colIdx}`;
                 const isBooked = selectedSlots[slotKey];
                 const isSlotBooked = bookedSlots.includes(slotKey);
-
-                console.log('Rendering slot', slotKey, 'isSlotBooked:', isSlotBooked);
-
                 return (
                   <div
                     key={colIdx}
@@ -226,13 +267,12 @@ export default function BookingPage() {
                   </div>
                 );
               })}
-
             </div>
           ))}
         </div>
       )}
 
-      {selectedCount > 0 && (
+      {selectedKeys.length > 0 && (
         <div className={styles.footerPopup}>
           <div>
             <div>Total</div>

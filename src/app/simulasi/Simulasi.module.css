@@ -1,0 +1,86 @@
+.container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .tableWrapper {
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+  }
+  
+  .table thead {
+    background-color: #f3f4f6;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  .table th {
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f9fafb;
+  }
+  
+  .imageWrapperSmall {
+    position: relative;
+    width: 80px;
+    height: 56px;
+    margin: 0 auto;
+  }
+  
+  .imageWrapperLogo {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+  }
+  
+  .imageWrapperBanner {
+    position: relative;
+    width: 140px;
+    height: 56px;
+    margin: 0 auto;
+  }
+  
+  .imageRounded {
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .imageRoundedCircle {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .description {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  

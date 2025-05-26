@@ -1,138 +1,125 @@
-'use client';
+import Image from 'next/image';
+import styles from './Simulasi.module.css';
 
-import { useState } from 'react';
+type Komunitas = {
+  id: number;
+  title: string;
+  user_id: number;
+  image: string;
+  image_logo: string;
+  image_banner: string;
+  phone: string;
+  deskripsi: string;
+  created_at: string;
+  updated_at: string;
+};
 
-export default function BookingSimulationPage() {
-  const [formData, setFormData] = useState({
-    requester_id: '',
-    court_id: '',
-    booking_date: '',
-    start_time: '',
-    end_time: ''
+const getKomunitas = async (): Promise<Komunitas[]> => {
+  const res = await fetch('http://127.0.0.1:8000/api/komunitas', {
+    cache: 'no-store',
   });
 
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  if (!res.ok) {
+    throw new Error('Gagal mengambil data komunitas');
+  }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const json = await res.json();
 
-  const handleSubmit = async () => {
-    setLoading(true);
+  let dataArray: Komunitas[] = [];
 
-    // Format waktu agar sesuai dengan H:i:s
-    const formattedStartTime = formData.start_time ? `${formData.start_time}:00` : '';
-    const formattedEndTime = formData.end_time ? `${formData.end_time}:00` : '';
+  if (Array.isArray(json.data)) {
+    dataArray = json.data;
+  } else if (json.data?.data && Array.isArray(json.data.data)) {
+    dataArray = json.data.data;
+  }
 
-    const payload = {
-      requester_id: formData.requester_id,
-      court_id: formData.court_id,
-      booking_date: formData.booking_date, // sudah Y-m-d
-      start_time: formattedStartTime,
-      end_time: formattedEndTime
-    };
+  // Sort berdasarkan id ascending
+  dataArray.sort((a, b) => a.id - b.id);
 
-    try {
-      const res = await fetch('http://localhost:8000/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+  return dataArray;
+};
 
-      const data = await res.json();
-      setResponse(data);
-    } catch (error) {
-      console.error(error);
-      setResponse({ success: false, message: 'Terjadi kesalahan saat mengirim data.' });
-    } finally {
-      setLoading(false);
-    }
-  };
+
+const imageUrl = (path: string) => `http://127.0.0.1:8000/storage/${path}`;
+
+const KomunitasPage = async () => {
+  const data = await getKomunitas();
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-xl font-bold mb-4">Simulasi Booking</h1>
-      <table className="w-full border mb-4">
-        <tbody>
-          <tr>
-            <td className="border px-2 py-1">Requester ID</td>
-            <td>
-              <input
-                type="text"
-                name="requester_id"
-                value={formData.requester_id}
-                onChange={handleChange}
-                className="w-full border px-2 py-1"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-2 py-1">Court ID</td>
-            <td>
-              <input
-                type="text"
-                name="court_id"
-                value={formData.court_id}
-                onChange={handleChange}
-                className="w-full border px-2 py-1"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-2 py-1">Booking Date</td>
-            <td>
-              <input
-                type="date"
-                name="booking_date"
-                value={formData.booking_date}
-                onChange={handleChange}
-                className="w-full border px-2 py-1"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-2 py-1">Start Time</td>
-            <td>
-              <input
-                type="time"
-                name="start_time"
-                value={formData.start_time}
-                onChange={handleChange}
-                className="w-full border px-2 py-1"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-2 py-1">End Time</td>
-            <td>
-              <input
-                type="time"
-                name="end_time"
-                value={formData.end_time}
-                onChange={handleChange}
-                className="w-full border px-2 py-1"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        {loading ? 'Mengirim...' : 'Kirim Booking'}
-      </button>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Daftar Komunitas</h1>
 
-      {response && (
-        <div className="mt-4 p-4 border bg-gray-100 rounded">
-          <h2 className="font-semibold">Respon API:</h2>
-          <pre className="text-sm text-gray-700">{JSON.stringify(response, null, 2)}</pre>
-        </div>
-      )}
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>User ID</th>
+              <th>Logo</th>
+              <th>Image</th>
+              <th>Banner</th>
+              <th>Phone</th>
+              <th>Deskripsi</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((komunitas) => (
+              <tr key={komunitas.id}>
+                <td>{komunitas.id}</td>
+                <td>{komunitas.title}</td>
+                <td>{komunitas.user_id}</td>
+                <td>
+                  {komunitas.image_logo && (
+                    <div className={styles.imageWrapperLogo}>
+                      <Image
+                        src={imageUrl(komunitas.image_logo)}
+                        alt={`${komunitas.title} Logo`}
+                        fill
+                        className={styles.imageRoundedCircle}
+                      />
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {komunitas.image && (
+                    <div className={styles.imageWrapperSmall}>
+                      <Image
+                        src={imageUrl(komunitas.image)}
+                        alt={`${komunitas.title} Image`}
+                        fill
+                        className={styles.imageRounded}
+                      />
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {komunitas.image_banner && (
+                    <div className={styles.imageWrapperBanner}>
+                      <Image
+                        src={imageUrl(komunitas.image_banner)}
+                        alt={`${komunitas.title} Banner`}
+                        fill
+                        className={styles.imageRounded}
+                      />
+                    </div>
+                  )}
+                </td>
+                <td>{komunitas.phone}</td>
+                <td title={komunitas.deskripsi} className={styles.description}>
+                  {komunitas.deskripsi}
+                </td>
+                <td>{new Date(komunitas.created_at).toLocaleDateString()}</td>
+                <td>{new Date(komunitas.updated_at).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-}
+};
+
+export default KomunitasPage;

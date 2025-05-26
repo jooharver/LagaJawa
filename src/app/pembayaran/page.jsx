@@ -12,14 +12,18 @@ function decodeBookingData(encoded) {
   }
 }
 
-// Helper agar waktu selalu lengkap format "HH:mm:ss"
+function formatTimeSlot(time) {
+  const [hour, minute] = time.split(':');
+  const formattedHour = hour.padStart(2, '0');  // tambahkan leading zero kalau perlu
+  return `${formattedHour}:${minute}`;
+}
+
+
 const ensureHmsFormat = (timeStr) => {
   const parts = timeStr.split(':');
-
   let h = parts[0].padStart(2, '0');
   let m = parts[1] ? parts[1].padStart(2, '0') : '00';
   let s = parts[2] ? parts[2].padStart(2, '0') : '00';
-
   return `${h}:${m}:${s}`;
 };
 
@@ -44,7 +48,6 @@ export default function PembayaranPage() {
 
   const { date, bookings, totalPrice } = bookingData;
 
-  // Format jam ke "HH:00:00"
   const formatHourToHms = (hour) => {
     const h = hour.toString().padStart(2, '0');
     return `${h}:00:00`;
@@ -55,46 +58,40 @@ export default function PembayaranPage() {
     const endHour = (startHour + duration) % 24;
     return formatHourToHms(endHour);
   };
-
   const handleBayar = async () => {
     setLoading(true);
-    try {
-      // Gabungkan semua slot waktu dari semua booking (bisa beda lapangan)
-      const allTimeSlots = bookings
-        .flatMap((b) => b.time_slots)
-        .map(ensureHmsFormat)
-        .sort();
+    let transactionId = null;
   
-      const paymentPayload = {
+    try {
+      const transactionPayload = {
+        user_id: 1,
         payment_method: paymentMethod,
-        time_slots: allTimeSlots,
       };
   
-      console.log('Mengirim data payment:', paymentPayload);
-  
-      const paymentRes = await fetch('http://localhost:8000/api/payments', {
+      // STEP 1: Buat transaksi
+      const transactionRes = await fetch('http://localhost:8000/api/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(paymentPayload),
+        body: JSON.stringify(transactionPayload),
       });
   
-      const paymentText = await paymentRes.text();
-      console.log('Payment API response status:', paymentRes.status);
-      console.log('Payment API response text:', paymentText);
+      const transactionData = await transactionRes.json();
+      console.log('Response transaksi:', transactionData);
   
-      let paymentJson;
-      try {
-        paymentJson = JSON.parse(paymentText);
-      } catch (e) {
-        throw new Error(`Gagal parsing JSON dari response pembayaran: ${e.message}`);
+      if (!transactionRes.ok) {
+        let errMsg = transactionData.message || JSON.stringify(transactionData);
+        throw new Error(`Gagal membuat transaksi: ${errMsg}`);
       }
   
-      if (!paymentRes.ok) throw new Error(paymentJson.message || 'Gagal membuat pembayaran');
+      transactionId =
+        transactionData.data?.transaction?.id_transaction ??
+        transactionData.data?.id_transaction ??
+        transactionData.id_transaction;
   
-      const paymentId = paymentJson.data.id_payment;
-      if (!paymentId) throw new Error('payment_id tidak ditemukan dari response pembayaran');
+      if (!transactionId) throw new Error('id_transaction tidak ditemukan');
+      console.log('id_transaction:', transactionId);
   
-      // Lanjut ke booking per court
+      // STEP 2: Buat bookings
       const groupedBookings = {};
       for (const b of bookings) {
         const courtId = b.court_id;
@@ -106,12 +103,13 @@ export default function PembayaranPage() {
         const timeSlotsHms = Array.from(slotSet).map(ensureHmsFormat).sort();
   
         const bookingPayload = {
-          requester_id: 1, // nanti ganti sesuai user login
           court_id: parseInt(courtId, 10),
           booking_date: date,
           time_slots: timeSlotsHms,
-          payment_id: paymentId, // pastikan ini ada di payload
+          transaction_id: transactionId,
         };
+  
+        console.log(`Mengirim booking untuk court ${courtId}:`, bookingPayload);
   
         const res = await fetch('http://localhost:8000/api/bookings', {
           method: 'POST',
@@ -120,26 +118,43 @@ export default function PembayaranPage() {
         });
   
         const text = await res.text();
-        console.log(`Booking API response status (Court ${courtId}):`, res.status);
-        console.log(`Booking API response text (Court ${courtId}):`, text);
-  
-        try {
-          const json = JSON.parse(text);
-          if (!res.ok) throw new Error(`Gagal booking Court ${courtId}: ${json.message || text}`);
-          return json;
-        } catch {
-          throw new Error(`Response bukan JSON dari booking Court ${courtId}: ${text}`);
+        if (!res.ok) {
+          let errMsg = text;
+          try {
+            const json = JSON.parse(text);
+            errMsg = json.message || text;
+          } catch {}
+          throw new Error(`Gagal booking Court ${courtId}: ${errMsg}`);
         }
+  
+        return JSON.parse(text);
       });
   
-      await Promise.all(bookingRequests);
-      alert('Booking berhasil!');
+      const bookingResults = await Promise.all(bookingRequests);
+      console.log('Hasil booking:', bookingResults);
+  
+      alert('Booking dan transaksi berhasil diproses!');
     } catch (error) {
+      console.error(error);
+  
+      if (transactionId) {
+        // Hapus transaksi jika booking gagal
+        try {
+          await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
+            method: 'DELETE',
+          });
+          console.log(`Transaksi ${transactionId} dibatalkan karena gagal booking.`);
+        } catch (err) {
+          console.error('Gagal menghapus transaksi:', err);
+        }
+      }
+  
       alert(`Terjadi kesalahan: ${error.message}`);
     } finally {
       setLoading(false);
     }
-  };  
+  };
+  
 
   return (
     <div className={styles.pageWrapper}>
@@ -159,13 +174,17 @@ export default function PembayaranPage() {
             const end = calculateEndTime(start, duration);
 
             return (
-              <div key={`${b.court_id}-${start}-${index}`} className={styles.bookingGroup}>
-                <p><strong>Lapangan :</strong> {b.court}</p>
-                <p><strong>Tanggal  :</strong> {date}</p>
-                <p><strong>Jam      :</strong> {start} - {end}</p>
-                <p><strong>Durasi   :</strong> {duration} jam</p>
-                <hr />
-              </div>
+            <div key={`${b.court_id}-${start}-${index}`} className={styles.bookingGroup}>
+              <p><strong>Lapangan :</strong> {b.court}</p>
+              <p><strong>Jenis    :</strong> {b.type}</p>
+              <p><strong>Tanggal  :</strong> {date}</p>
+              <p><strong>Slot Waktu :</strong> {b.time_slots.map(formatTimeSlot).join(', ')}</p>
+              <p><strong>Jam      :</strong> {start} - {end}</p>
+              <p><strong>Durasi   :</strong> {duration} jam</p>
+              <p><strong>Amount   :</strong> Rp{b.amount.toLocaleString('id-ID')}</p>
+              <hr />
+            </div>
+
             );
           })}
           <p className={styles.total}><strong>Total Harga:</strong> Rp{totalPrice.toLocaleString('id-ID')}</p>
@@ -193,7 +212,7 @@ export default function PembayaranPage() {
             onClick={handleBayar}
             disabled={loading}
           >
-            {loading ? 'Memproses...' : 'Tes Booking Sekarang'}
+            {loading ? 'Memproses...' : 'Bayar Sekarang'}
           </button>
         </div>
       </div>
