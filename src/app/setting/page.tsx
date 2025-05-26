@@ -10,15 +10,44 @@ const SettingPage = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
 
   useEffect(() => {
-    // Cek token atau session di localStorage
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    if (token) {
+      setIsLoggedIn(true);
+      fetchUserProfile(token);
+    }
   }, []);
 
+  interface UserProfile {
+    name: string;
+    email: string;
+    phone: string;
+  }
+
+  const fetchUserProfile = async (token: string): Promise<void> => {
+    try {
+      const res: Response = await fetch('/api/user/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data: UserProfile = await res.json();
+        setUserData(data);
+      } else {
+        console.error('Gagal mengambil data profil');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleLogout = () => {
-      setTimeout(() => {
+    setIsLoggingOut(true);
+    setTimeout(() => {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
       setIsLoggingOut(false);
@@ -26,17 +55,25 @@ const SettingPage = () => {
     }, 1000);
   };
 
-
   return (
     <div className={styles.container}>
       <main className={styles.mainContent}>
         <header className={styles.header}>
-          <h1>Akun</h1>
+          <h2>Akun</h2>
         </header>
 
         {isLoggedIn ? (
           <>
-            {/* Jika sudah login */}
+            {/* Info Akun */}
+            <section className={styles.profileSection}>
+              <h3>Informasi Akun</h3>
+              <p><strong>Nama     :</strong> {userData.name}</p>
+              <p><strong>Email    :</strong> {userData.email}</p>
+              <p><strong>Nomor HP :</strong> {userData.phone}</p>
+            </section>
+
+            <div className={styles.divider}></div>
+
             <section className={styles.loggedInSection}>
               <button
                 className={styles.logoutButton}
@@ -44,7 +81,7 @@ const SettingPage = () => {
                 disabled={isLoggingOut}
               >
                 {isLoggingOut ? (
-                  <span className={styles.spinner}></span> // spinner animasi loading
+                  <span className={styles.spinner}></span>
                 ) : (
                   <>
                     <LogOut size={18} />
@@ -58,6 +95,9 @@ const SettingPage = () => {
 
             <section className={styles.transactionSection}>
               <h2>Riwayat Transaksi</h2>
+              <p className={styles.cartNote}>
+                Lihat riwayat transaksi dan pesanan Anda
+              </p>
               <button
                 className={styles.viewAllButton}
                 onClick={() => router.push('/transactions')}
@@ -65,14 +105,10 @@ const SettingPage = () => {
                 <ShoppingCart size={18} />
                 VIEW ALL TRANSACTIONS
               </button>
-              <p className={styles.cartNote}>
-                Lihat riwayat transaksi dan pesanan Anda
-              </p>
             </section>
           </>
         ) : (
           <>
-            {/* Jika belum login */}
             <section className={styles.loginSection}>
               <button
                 className={styles.loginButton}

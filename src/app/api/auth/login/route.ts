@@ -3,7 +3,11 @@ import pool from '../../../lib/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'rahasia_jwt';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not set.');
+}
 
 export async function POST(request: Request) {
   const { email, password } = await request.json();
@@ -22,17 +26,28 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Password salah' }, { status: 401 });
     }
 
-    // Generate token JWT (atau session)
+    // Generate token JWT
     const token = jwt.sign(
       {
         userId: user.id,
         email: user.email,
       },
-      JWT_SECRET,
+      JWT_SECRET as string,
       { expiresIn: '2h' }
     );
 
-    return NextResponse.json({ token, message: 'Login berhasil' }, { status: 200 });
+    // Kirim token + info pengguna
+    return NextResponse.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone
+      },
+      message: 'Login berhasil'
+    }, { status: 200 });
+
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Terjadi kesalahan server' }, { status: 500 });
