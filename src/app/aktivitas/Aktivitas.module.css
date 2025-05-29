@@ -1,0 +1,80 @@
+/* Aktivitas.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 100px;
+  background-color: #f9f9f9;
+}
+
+.heroSection {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #017a10, #000428);
+  color: white;
+  padding-top: 80px; ;
+  position: relative;
+}
+
+.heroText {
+  flex: 1;
+  z-index: 2;
+  position: relative;
+}
+
+.heroText h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.heroText p {
+  font-size: 1.25rem;
+  max-width: 500px;
+}
+
+.heroImage {
+  flex: 1;
+  position: relative;
+}
+
+.heroImage img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  opacity: 0.7;
+  mix-blend-mode: lighten;
+  filter: blur(1px);
+}
+
+.section {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.moreButton {
+  margin-top: 1rem;
+  display: inline-block;
+  background-color: #004e92;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.moreButton:hover {
+  background-color: #003366;
+}
