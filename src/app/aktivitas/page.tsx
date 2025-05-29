@@ -1,5 +1,4 @@
 import styles from './Aktivitas.module.css';
-import AutoCarousel from '@/app/components/AutoCarousel';
 import Link from 'next/link';
 
 interface Komunitas {
@@ -96,16 +95,14 @@ export default async function AktivitasPage() {
       <section className={styles.section}>
         <h2>Komunitas</h2>
         <p>Berbagai komunitas futsal aktif yang dapat kamu ikuti dan ikuti kegiatannya.</p>
-        <AutoCarousel
-          items={komunitas.slice(0,5).map((item) => ({
-            id: item.id,
-            title: item.title,
-            image: `http://localhost:8000/storage/${item.image_logo}`,
-            link: `/aktivitas/komunitas/${item.id}`,
-          }))}
-          interval={4000}
-          itemWidth="160px"
-        />
+        <div className={styles.itemGrid}>
+          {komunitas.slice(0, 5).map((item) => ( 
+            <Link key={item.id} href={`/aktivitas/komunitas/${item.id}`} className={styles.aktivitasCard}>
+              <img src={`http://localhost:8000/storage/${item.image_logo}`} alt={item.title} className={styles.cardImage} />
+              <p className={styles.cardTitle}>{item.title}</p>
+            </Link>
+          ))}
+        </div>
         <Link href="/aktivitas/komunitas" className={styles.moreButton}>Lihat Selengkapnya</Link>
       </section>
 
@@ -113,16 +110,14 @@ export default async function AktivitasPage() {
       <section className={styles.section}>
         <h2>Acara Terbaru</h2>
         <p>Ikuti acara-acara seru yang akan datang!</p>
-        <AutoCarousel
-          items={acara.slice(0,5).map((item) => ({
-            id: item.id_news,
-            title: item.judul,
-            image: `http://localhost:8000/storage/${item.image}`,
-            link: `/aktivitas/acara/${item.id_news}`,
-          }))}
-            interval={4000}
-            itemWidth="160px"
-        />
+        <div className={styles.itemGrid}>
+          {acara.slice(0, 5).map((item) => ( 
+            <Link key={item.id_news} href={`/aktivitas/acara/${item.id_news}`} className={styles.aktivitasCard}>
+              <img src={`http://localhost:8000/storage/${item.image}`} alt={item.judul} className={styles.cardImage} />
+              <p className={styles.cardTitle}>{item.judul}</p>
+            </Link>
+          ))}
+        </div>
         <Link href="/aktivitas/acara" className={styles.moreButton}>Lihat Selengkapnya</Link>
       </section>
     </main>
