@@ -1,8 +1,12 @@
 .container {
+  margin-top:   100px;
   max-width: 800px;
   margin: 50px auto 0 auto; /* center horizontally */
   padding: 1rem;
   font-family: Poppins, sans-serif;
+  border-radius: 8px;
+  max-height: 100dvh;
+  margin-bottom: 100px;
 }
 
 .mainContent {
@@ -13,14 +17,19 @@
 
 .header h1 {
   margin-bottom: 1rem;
+  color: #000000;
 }
+
 
 .loginSection,
 .cartSection,
 .contactSection,
 .socialSection {
-  margin-bottom: 2.5rem;
+  
+  color: #000000;
 }
+
+
 
 .spinner {
   display: inline-block;
@@ -40,10 +49,13 @@
   }
 }
 
+.loginButton,
+.logoutButton,
+.viewAllButton,
 .contactButton {
   width: 100%;
   padding: 0.75rem;
-  background: #416a48;
+  background: #1ca977;
   color: white;
   border: none;
   border-radius: 6px;
@@ -56,39 +68,22 @@
   justify-content: center;
   height: 46px;
   gap: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* shadow hijau transparan */
 
-.contactButton:hover {
-  background-color: #0c711d;
-  transition: background-color 0.3s ease;
-  transform: translateY(-2px);
-}
-
-.loginButton,
-.logoutButton,
-.viewAllButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: #416a48;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.5s;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
 .loginButton:hover,
-.viewAllButton:hover {
-  background-color: #0c711d;
-  transition: background-color 0.3s ease;
+.logoutButton:hover,
+.viewAllButton:hover,
+.contactButton:hover {
+  background-color: #017a10;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   transform: translateY(-2px);
+  color: white;
+  box-shadow: 0 8px 15px rgba(1, 122, 16, 0.4); /* shadow hijau transparan */
 }
+
+
 
 .loginNote {
   font-size: 0.9rem;
@@ -106,6 +101,10 @@
   margin-top: 1rem;
 }
 
+.profileSection h2, .profileSection p , .transactionSection h2, .transactionSection p {
+  color: #000000;
+}
+
 .tableHeader {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr;
@@ -117,29 +116,55 @@
 
 .socialIcons {
   display: flex;
-  gap: 8rem;
+  gap: 10rem;
   margin-top: 0.5rem;
 }
 
 .socialLink {
-  background-color: #416a48;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #1ca977;
   text-decoration: none;
   font-weight: 600;
   padding: 10px 16px;
   border: none;
-  border-radius: 6px;
+  
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
+}
+.profileSection {
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.infoRow {
+  display: grid;
+  grid-template-columns: 120px 10px 1fr;
+  margin-bottom: 0.5rem;
 }
 
-.socialLink:hover {
-  background-color: #0c711d;
+.label {
+  font-weight: 600;
 }
+
+.separator {
+  text-align: center;
+}
+
+.value {
+  word-break: break-word;
+}
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  border-top: 1px solid #eee;
+}
+
 
 /* ===== MEDIA QUERIES ===== */
 @media (max-width: 900px) {
@@ -150,6 +175,7 @@
   
   .mainContent {
     padding: 1rem 1.5rem;
+    padding-bottom: 60px;
   }
   
   .socialIcons {
@@ -175,6 +201,7 @@
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
+    border: #000000;
   }
 
   .tableHeader {
@@ -185,6 +212,8 @@
   .transactionTable {
     overflow-x: auto;
   }
+
+  
 }
 
 @media (max-width: 400px) {

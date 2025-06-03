@@ -1,0 +1,128 @@
+/* Aktivitas.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 100px;
+  background-color: #f9f9f9;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.heroSection {
+  display: flex;
+  height: 100vh;
+  width: 99vw;
+  align-items: center;
+  justify-content: flex-start;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.3) 70%, transparent),
+    url('/images/Futsal.jpg'); /* Pastikan file ada di public/images */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  overflow: hidden;
+}
+
+.heroContent {
+  padding-left: 100px;
+  padding-right: 100px;
+  max-width: 1440px;
+  width: 100%;
+}
+
+.heroOverlay {
+  max-width: 600px;
+  z-index: 2;
+}
+
+.heroText h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.heroText p {
+  font-size: 1.25rem;
+  max-width: 500px;
+}
+
+.section {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.itemGrid {
+  display: flex; /* Gunakan flexbox untuk tata letak baris */
+  flex-wrap: wrap; /* Izinkan item untuk wrap ke baris berikutnya */
+  justify-content: center; /* Pusatkan item secara horizontal */
+  gap: 1rem; /* Jarak antar item */
+  margin-bottom: 2rem; /* Jarak bawah dari tombol "Lihat Selengkapnya" */
+  padding: 0 20px; /* Tambahkan padding horizontal agar tidak terlalu mepet ke tepi */
+}
+
+.aktivitasCard {
+  flex: 0 0 auto; /* Jangan izinkan item untuk tumbuh atau menyusut */
+  width: 160px; /* Lebar tetap untuk setiap kartu */
+  height: 220px; /* Tinggi tetap untuk setiap kartu */
+  background: white;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  transition: transform 0.2s ease-in-out; /* Efek hover */
+}
+
+.aktivitasCard:hover {
+  transform: translateY(-5px); /* Sedikit naik saat di-hover */
+}
+
+/* Gaya untuk gambar di dalam kartu */
+.cardImage {
+  width: 100px; /* Lebar gambar */
+  height: 100px; /* Tinggi gambar */
+  object-fit: contain; /* Pastikan gambar pas tanpa terpotong */
+  margin-bottom: 0.5rem;
+}
+
+/* Gaya untuk judul di dalam kartu */
+.cardTitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow: hidden; /* Sembunyikan teks yang melampaui batas */
+  text-overflow: ellipsis; /* Tambahkan elipsis (...) jika teks terlalu panjang */
+  white-space: nowrap; /* Jangan biarkan teks wrap ke baris baru */
+  max-width: 100%; /* Pastikan judul tidak melebihi lebar kartu */
+}
+
+.moreButton {
+  margin-top: 1rem;
+  display: inline-block;
+  background-color: #00920c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.moreButton:hover {
+  background-color: #0f6600;
+}

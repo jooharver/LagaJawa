@@ -10,15 +10,44 @@ const SettingPage = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
 
   useEffect(() => {
-    // Cek token atau session di localStorage
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    if (token) {
+      setIsLoggedIn(true);
+      fetchUserProfile(token);
+    }
   }, []);
 
+  interface UserProfile {
+    name: string;
+    email: string;
+    phone: string;
+  }
+
+  const fetchUserProfile = async (token: string): Promise<void> => {
+    try {
+      const res: Response = await fetch('/api/user/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data: UserProfile = await res.json();
+        setUserData(data);
+      } else {
+        console.error('Gagal mengambil data profil');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleLogout = () => {
-      setTimeout(() => {
+    setIsLoggingOut(true);
+    setTimeout(() => {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
       setIsLoggingOut(false);
@@ -26,17 +55,35 @@ const SettingPage = () => {
     }, 1000);
   };
 
-
   return (
     <div className={styles.container}>
       <main className={styles.mainContent}>
         <header className={styles.header}>
-          <h1>Akun</h1>
+          <h2>Profile Pengguna</h2>
         </header>
 
         {isLoggedIn ? (
           <>
-            {/* Jika sudah login */}
+            {/* Info Akun */}
+            <section className={styles.profileSection}>
+              <h2>Informasi Akun</h2>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Nama</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>Muhammad Rifky</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Email</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>muh.rifky.harto@gmail.com</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Nomor HP</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>0895600389272</span>
+              </div>
+            </section>
+
             <section className={styles.loggedInSection}>
               <button
                 className={styles.logoutButton}
@@ -44,7 +91,7 @@ const SettingPage = () => {
                 disabled={isLoggingOut}
               >
                 {isLoggingOut ? (
-                  <span className={styles.spinner}></span> // spinner animasi loading
+                  <span className={styles.spinner}></span>
                 ) : (
                   <>
                     <LogOut size={18} />
@@ -58,6 +105,9 @@ const SettingPage = () => {
 
             <section className={styles.transactionSection}>
               <h2>Riwayat Transaksi</h2>
+              <p className={styles.cartNote}>
+                Lihat riwayat transaksi dan pesanan Anda
+              </p>
               <button
                 className={styles.viewAllButton}
                 onClick={() => router.push('/transactions')}
@@ -65,14 +115,10 @@ const SettingPage = () => {
                 <ShoppingCart size={18} />
                 VIEW ALL TRANSACTIONS
               </button>
-              <p className={styles.cartNote}>
-                Lihat riwayat transaksi dan pesanan Anda
-              </p>
             </section>
           </>
         ) : (
           <>
-            {/* Jika belum login */}
             <section className={styles.loginSection}>
               <button
                 className={styles.loginButton}
@@ -96,12 +142,18 @@ const SettingPage = () => {
           <p>Tim dukungan kami siap membantu Anda</p>
           <button
             className={styles.contactButton}
-            onClick={() => router.push('/contact')}
+            onClick={() =>
+              window.open(
+                "https://wa.me/62895600389272?text=Halo%20Admin,%20saya%20butuh%20bantuan%20dengan%20pemesanan%20Lapangan%20Futsal.",
+                "_blank"
+              )
+            }
           >
-            <PhoneCall size={18} />
+            <PhoneCall size={18} style={{ marginRight: "8px" }} />
             CONTACT SUPPORT
           </button>
         </section>
+
 
         <div className={styles.divider}></div>
 
@@ -120,6 +172,10 @@ const SettingPage = () => {
             </a>
           </div>
         </section>
+        <footer className={styles.footer}>
+          <p>&copy; {new Date().getFullYear()} LJ Futsal. All rights reserved.</p>
+        </footer>
+
       </main>
     </div>
   );

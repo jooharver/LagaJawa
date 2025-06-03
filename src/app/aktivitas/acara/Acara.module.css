@@ -1,0 +1,114 @@
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.headerSection {
+  text-align: center;
+}
+
+.headerSection h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.headerSection p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.eventsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eventItem {
+  display: flex;
+  gap: 16px; /* jarak antara gambar dan teks */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-decoration: none;  /* agar tidak tampil seperti link */
+  color: inherit;         /* agar tidak berubah warna seperti <a> */
+  /* pastikan semua item sama tinggi */
+  min-height: 120px; /* sesuaikan sesuai kebutuhan */
+  align-items: stretch; /* bikin kolom kiri dan kanan sama tinggi */
+  background-color: #fff;
+}
+
+.eventItem:hover {
+  transform: translateY(-4px);
+  cursor: pointer;
+}
+
+.eventItem h3 {
+  margin: 0;
+}
+
+.eventItem p {
+  margin: 4px 0 0;
+}
+
+.left {
+  flex-shrink: 0; /* supaya gambar tidak mengecil */
+  width: 150px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* supaya gambar menyesuaikan kotak tanpa distorsi */
+  display: block;
+}
+
+.right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* agar teks rata tengah vertikal */
+}
+
+.right h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.paginationSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.paginationSection button {
+  background-color: #00920c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.paginationSection button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginationSection span {
+  font-weight: 600;
+  color: #333;
+}

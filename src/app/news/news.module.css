@@ -1,84 +1,91 @@
 .container {
   max-width: 900px;
-  margin: 5rem auto 0 auto;  /* Atur margin atas 5rem, kiri-kanan auto supaya center */
+  margin: 5rem auto 0 auto;
   padding: 2rem;
   text-align: center;
+  margin-bottom: 60px;
 }
 
-
+/* ======= FILTER BUTTONS ======= */
 .filterButtons {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap; /* agar tombol wrap di layar kecil */
-  position: center;
-  justify-content: center; /* supaya tombol ada di tengah */
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.filterButton {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  background: #f0f0f0;
-  cursor: pointer;
-  border-radius: 6px;
-  white-space: nowrap; /* agar teks tombol tidak pecah */
-}
-
-.active {
-  background: #0c711d;
+/* Tombol individual */
+.filterButtons button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #1ca977; /* biru segar */
   color: white;
-  border-color: #0070f3;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* Hover effect */
+.filterButtons button:hover {
+  background-color: #ffffff; /* biru lebih gelap saat hover */
+  transform: translateY(-2px);
+  color: #000000; /* teks berubah menjadi biru */
+}
+
+/* Tombol aktif */
+.filterButtons button.active {
+  background-color: #0c711d; /* hijau aktif */
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ======= NEWS LIST ======= */
 .newsList {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
+/* CARD BERITA */
 .newsItem {
   display: flex;
-  justify-content: center; /* container tengah horizontal */
+  justify-content: center;
   gap: 24px;
   margin-bottom: 24px;
   border: 1px solid #ccc;
   padding: 16px;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: stretch; /* penting: buat kiri & kanan sejajar tinggi */
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  background-color: #fff;
 }
 
-/* Container gambar + tombol dalam kolom supaya tombol ada di bawah gambar */
+/* Kiri: gambar dan tombol */
 .imageButtonWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center; /* supaya tombol & gambar sejajar tengah */
-  gap: 12px;
-  flex-shrink: 0; /* supaya tidak mengecil */
-  width: 150px; /* sesuaikan dengan lebar gambar */
+  align-items: center;
+  justify-content: space-between; /* tombol selalu di bawah */
+  width: 150px;
+  height: 100%; /* penting: penuh tinggi */
+  gap: 10px;
 }
 
+/* Gambar lebih tinggi */
 .newsImage {
-  width: 150px;
-  height: 100px;
+  width: 100%;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-/* Konten teks */
-.newsContent {
-  flex: 1;
-  min-width: 0;
-  text-align: left;
-}
 
-
-.meta {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0.5rem 0;
-}
-
-/* Tombol di desktop tetap sesuai imageButtonWrapper */
+/* TOMBOL DETAIL */
 .detailButton {
   padding: 8px 16px;
   background-color: #0c711d;
@@ -86,19 +93,32 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 100%; /* tombol full lebar di container */
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .detailButton:hover {
-  background-color: #ffffff;
+  background-color: white;
   color: #0c711d;
   border: 1px solid #0c711d;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
 }
 
-/* MEDIA QUERY MOBILE */
+/* KONTEN BERITA */
+.newsContent {
+  flex: 1;
+  text-align: left;
+  min-width: 0;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.5rem 0;
+}
+
+/* ======= MOBILE RESPONSIVE ======= */
 @media (max-width: 600px) {
   .newsItem {
     flex-direction: column;
@@ -113,15 +133,17 @@
   .newsImage {
     width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 250px;
   }
 
   .detailButton {
-    width: fit-content;
-    margin: 16px auto 0;
+    width: 100%;
+    margin: 0;
   }
 
   .newsContent {
     width: 100%;
+    text-align: left;
   }
 }
+
