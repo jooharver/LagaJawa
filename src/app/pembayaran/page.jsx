@@ -58,102 +58,117 @@ export default function PembayaranPage() {
     const endHour = (startHour + duration) % 24;
     return formatHourToHms(endHour);
   };
-  const handleBayar = async () => {
-    setLoading(true);
-    let transactionId = null;
-  
-    try {
-      const transactionPayload = {
-        user_id: 1,
-        payment_method: paymentMethod,
+const handleBayar = async () => {
+  setLoading(true);
+  let transactionId = null;
+
+  try {
+    const transactionPayload = {
+      user_id: 1,
+      payment_method: paymentMethod,
+    };
+
+    // STEP 1: Buat transaksi
+    const transactionRes = await fetch('http://localhost:8000/api/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(transactionPayload),
+    });
+
+    const transactionData = await transactionRes.json();
+    console.log('Response transaksi:', transactionData);
+
+    if (!transactionRes.ok) {
+      let errMsg = transactionData.message || JSON.stringify(transactionData);
+      throw new Error(`Gagal membuat transaksi: ${errMsg}`);
+    }
+
+    transactionId =
+      transactionData.data?.transaction?.id_transaction ??
+      transactionData.data?.id_transaction ??
+      transactionData.id_transaction;
+
+    if (!transactionId) throw new Error('id_transaction tidak ditemukan');
+    console.log('id_transaction:', transactionId);
+
+    // STEP 2: Buat bookings
+    const groupedBookings = {};
+    for (const b of bookings) {
+      const courtId = b.court_id;
+      if (!groupedBookings[courtId]) groupedBookings[courtId] = new Set();
+      b.time_slots.forEach(slot => groupedBookings[courtId].add(slot));
+    }
+
+    const bookingRequests = Object.entries(groupedBookings).map(async ([courtId, slotSet]) => {
+      const timeSlotsHms = Array.from(slotSet).map(ensureHmsFormat).sort();
+
+      const bookingPayload = {
+        court_id: parseInt(courtId, 10),
+        booking_date: date,
+        time_slots: timeSlotsHms,
+        transaction_id: transactionId,
       };
-  
-      // STEP 1: Buat transaksi
-      const transactionRes = await fetch('http://localhost:8000/api/transactions', {
+
+      console.log(`Mengirim booking untuk court ${courtId}:`, bookingPayload);
+
+      const res = await fetch('http://localhost:8000/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(transactionPayload),
+        body: JSON.stringify(bookingPayload),
       });
-  
-      const transactionData = await transactionRes.json();
-      console.log('Response transaksi:', transactionData);
-  
-      if (!transactionRes.ok) {
-        let errMsg = transactionData.message || JSON.stringify(transactionData);
-        throw new Error(`Gagal membuat transaksi: ${errMsg}`);
-      }
-  
-      transactionId =
-        transactionData.data?.transaction?.id_transaction ??
-        transactionData.data?.id_transaction ??
-        transactionData.id_transaction;
-  
-      if (!transactionId) throw new Error('id_transaction tidak ditemukan');
-      console.log('id_transaction:', transactionId);
-  
-      // STEP 2: Buat bookings
-      const groupedBookings = {};
-      for (const b of bookings) {
-        const courtId = b.court_id;
-        if (!groupedBookings[courtId]) groupedBookings[courtId] = new Set();
-        b.time_slots.forEach(slot => groupedBookings[courtId].add(slot));
-      }
-  
-      const bookingRequests = Object.entries(groupedBookings).map(async ([courtId, slotSet]) => {
-        const timeSlotsHms = Array.from(slotSet).map(ensureHmsFormat).sort();
-  
-        const bookingPayload = {
-          court_id: parseInt(courtId, 10),
-          booking_date: date,
-          time_slots: timeSlotsHms,
-          transaction_id: transactionId,
-        };
-  
-        console.log(`Mengirim booking untuk court ${courtId}:`, bookingPayload);
-  
-        const res = await fetch('http://localhost:8000/api/bookings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bookingPayload),
-        });
-  
-        const text = await res.text();
-        if (!res.ok) {
-          let errMsg = text;
-          try {
-            const json = JSON.parse(text);
-            errMsg = json.message || text;
-          } catch {}
-          throw new Error(`Gagal booking Court ${courtId}: ${errMsg}`);
-        }
-  
-        return JSON.parse(text);
-      });
-  
-      const bookingResults = await Promise.all(bookingRequests);
-      console.log('Hasil booking:', bookingResults);
-  
-      alert('Booking dan transaksi berhasil diproses!');
-    } catch (error) {
-      console.error(error);
-  
-      if (transactionId) {
-        // Hapus transaksi jika booking gagal
+
+      const text = await res.text();
+      if (!res.ok) {
+        let errMsg = text;
         try {
-          await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
-            method: 'DELETE',
-          });
-          console.log(`Transaksi ${transactionId} dibatalkan karena gagal booking.`);
-        } catch (err) {
-          console.error('Gagal menghapus transaksi:', err);
-        }
+          const json = JSON.parse(text);
+          errMsg = json.message || text;
+        } catch {}
+        throw new Error(`Gagal booking Court ${courtId}: ${errMsg}`);
       }
-  
-      alert(`Terjadi kesalahan: ${error.message}`);
-    } finally {
-      setLoading(false);
+
+      return JSON.parse(text);
+    });
+
+    const bookingResults = await Promise.all(bookingRequests);
+    console.log('Hasil booking:', bookingResults);
+
+    // STEP 3: Generate Snap Token
+    const snapResponse = await fetch(`http://localhost:8000/api/transactions/${transactionId}/generate-snap`);
+    const snapData = await snapResponse.json();
+    if (!snapData.success) throw new Error(snapData.message);
+
+    if (paymentMethod === 'cod') {
+      alert('Transaksi berhasil dibuat dengan metode COD.\nSilakan tunggu konfirmasi admin.');
+      window.location.href = `/pembayaran/status?order_id=${snapData.data.transaction.no_pemesanan}`;
+    } else if (snapData.data.snap_token) {
+      // Redirect ke VTWeb Midtrans
+      window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${snapData.data.snap_token}`;
+    } else {
+      throw new Error('Snap token tidak ditemukan untuk metode pembayaran selain COD.');
     }
-  };
+
+  } catch (error) {
+    console.error(error);
+
+    if (transactionId) {
+      // Hapus transaksi jika booking gagal
+      try {
+        await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
+          method: 'DELETE',
+        });
+        console.log(`Transaksi ${transactionId} dibatalkan karena gagal booking.`);
+      } catch (err) {
+        console.error('Gagal menghapus transaksi:', err);
+      }
+    }
+
+    alert(`Terjadi kesalahan: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
   
 
   return (

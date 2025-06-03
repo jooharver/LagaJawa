@@ -1,124 +1,79 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import styles from './Status.module.css';
-
-function decodeBookingData(encoded) {
-  try {
-    return JSON.parse(atob(decodeURIComponent(encoded)));
-  } catch (e) {
-    return null;
-  }
-}
 
 export default function StatusPage() {
   const searchParams = useSearchParams();
-  const encodedData = searchParams.get('data');
-  const data = useMemo(() => decodeBookingData(encodedData), [encodedData]);
-
-  const [timeRemaining, setTimeRemaining] = useState(15 * 60); // 15 menit
-  const [status, setStatus] = useState('waiting for payment');
+  const orderId = searchParams.get('order_id');
+  const [transaction, setTransaction] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setStatus('payment expired');
-          return 0;
+    if (!orderId) {
+      setError('Order ID tidak ditemukan di URL.');
+      setLoading(false);
+      return;
+    }
+
+    const fetchTransaction = async () => {
+      try {
+        const res = await fetch(`http://localhost:8000/api/transactions/by-order/${orderId}`);
+        const json = await res.json();
+
+        if (!json.success) {
+          setError('Transaksi tidak ditemukan.');
+        } else {
+          setTransaction(json.data);
         }
-        return prev - 1;
-      });
-    }, 1000);
+      } catch (err) {
+        setError('Gagal mengambil data transaksi.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, []);
+    fetchTransaction();
+  }, [orderId]);
 
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const handlePayAgain = () => {
+    if (!transaction?.snap_token) {
+      alert('Snap Token tidak tersedia.');
+      return;
+    }
+
+    const snapUrl = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${transaction.snap_token}`;
+    window.open(snapUrl, '_blank');
   };
 
-  if (!data) {
-    return <div className={styles.pageWrapper}>Data tidak valid atau rusak.</div>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (!transaction) return <p>Transaksi tidak ditemukan.</p>;
 
   return (
-    <div className={styles.pageWrapper}>
-      <div className={styles.container}>
-        {/* Card Header */}
-        <div className={styles.cardHeader}>
-          <h1 className={styles.title}>Status Pembayaran</h1>
-          <hr />
-        </div>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
+      <h1>Status Pembayaran</h1>
+      <p><strong>No Pemesanan:</strong> {transaction.no_pemesanan}</p>
+      <p><strong>Status:</strong> {transaction.payment_status}</p>
+      <p><strong>Total:</strong> Rp {transaction.total_amount.toLocaleString()}</p>
 
-        {/* Rincian Pemesanan */}
-        <div className={styles.card}>
-          <h3>Rincian Pemesanan</h3>
-          <div className={styles.bookingDetails}>
-          <p><strong>Nomor Pemesanan:</strong> {data.bookingId}</p>
-            <p><strong>Tanggal:</strong> {data.date}</p>
-            <p><strong>Metode Pembayaran:</strong> {data.paymentMethod.toUpperCase()}</p>
-            {data.bookings.map((b, i) => (
-              <div key={i} className={styles.bookingItem}>
-                <p><strong>Lapangan:</strong> {b.court}</p>
-                <p><strong>Jam:</strong> {b.start} - {b.duration + parseInt(b.start.split(':')[0])}:00</p>
-                <p><strong>Durasi:</strong> {b.duration} jam</p>
-                <hr />
-              </div>
-            ))}
-            <p><strong>Total Harga:</strong> Rp {data.totalPrice.toLocaleString('id-ID')}</p>
-          </div>
-        </div>
-
-        {/* QRIS or Other Payment Instructions */}
-        <div className={styles.qrisContainer}>
-          {data.paymentMethod === 'qris' && (
-            <div className={styles.qrisInfo}>
-              <img src="/images/qr-code.png" alt="QRIS" className={styles.qrisImage} />
-              <p>Silahkan scan atau screenshot QRIS untuk melakukan pembayaran.</p>
-            </div>
-          )}
-          {data.paymentMethod === 'transfer' && (
-            <div className={styles.transferInfo}>
-              <p>Silakan transfer ke rekening BCA 123456789 a.n. LJ Futsal.</p>
-            </div>
-          )}
-          {data.paymentMethod === 'cod' && (
-            <div className={styles.codInfo}>
-              <p>Bayar langsung di tempat saat datang.</p>
-            </div>
-          )}
-        </div>
-
-        {/* Timer */}
-        <div className={styles.cardTimer}>
-          <h2>Status: {status}</h2>
-          {status === 'waiting for payment' && (
-            <div className={styles.timer}>
-              <p>Waktu tersisa: {formatTime(timeRemaining)}</p>
-            </div>
-          )}
-          {status === 'payment expired' && (
-            <p>Waktu pembayaran telah habis. Silakan lakukan pemesanan ulang.</p>
-          )}
-        </div>
-
-        {/* Admin Contact Card */}
-        <div className={styles.cardAdmin}>
-          <p className={styles.adminMessage}>Jika ada kendala, harap hubungi admin.</p>
-          <a
-            href="https://wa.me/087870463683" // Replace with your admin's WhatsApp number
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.whatsappButton}
-          >
-            Hubungi Admin via WhatsApp
-          </a>
-        </div>
-      </div>
+      {transaction.payment_status === 'waiting' && transaction.snap_token && (
+        <button
+          onClick={handlePayAgain}
+          style={{
+            marginTop: '1rem',
+            background: 'green',
+            color: 'white',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Lanjutkan Pembayaran
+        </button>
+      )}
     </div>
   );
 }

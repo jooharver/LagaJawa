@@ -1,189 +1,42 @@
-.pageWrapper {
-    margin-top: 100px;
-    background: linear-gradient(to bottom, #0b7a50, #5bd79b);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 10px; /* Add left and right padding for mobile */
-  }
-  
-  .container {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: white;
-    width: 100%;
-    max-width: 600px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  
-  /* Card Header */
-  .cardHeader {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  /* Card Content */
-  .card {
-    margin-bottom: 30px;
-  }
-  
-  .bookingDetails p {
-    margin: 8px 0;
-    font-size: 16px;
-  }
-  
-  .qrisContainer {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .qrisImage {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Timer Card */
-  .cardTimer {
-    background-color: #f0f0f0;
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .timer p {
-    font-size: 18px;
-    font-weight: bold;
-    color: red;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
-  }
-  
-  .qrisInfo,
-  .transferInfo,
-  .codInfo {
-    margin-top: 15px;
-  }
-  
-  /* Admin Contact Card */
-  .cardAdmin {
-    background-color: #fff3cd; /* Light yellow background */
-    padding: 20px;
-    text-align: center;
-    margin-top: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .adminMessage {
-    font-size: 16px;
-    color: #856404;
-    margin-bottom: 15px;
-  }
-  
-  .whatsappButton {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #25d366; /* WhatsApp green */
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.2s ease;
-  }
-  
-  .whatsappButton:hover {
-    background-color: #128c7e;
-    transform: scale(1.03); /* WhatsApp dark green */
-  }
+.container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+  font-family: sans-serif;
+}
 
-  .whatsappButton:active {
-    transform: scale(0.98);
-  }
-  
-  /* Mobile Responsiveness */
-  @media (max-width: 768px) {
-    .container {
-      margin-left: 5px;
-      margin-right: 5px;
-      padding: 15px; /* Adjust padding for smaller screens */
-    }
-  
-    .title {
-      font-size: 20px; /* Adjust title font size */
-    }
+.heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
 
-    .cardTimer h2{
-      font-size: 18px;
-    }
-  
-    .bookingDetails p {
-      font-size: 0.9rem !important;
-    }
-    
-    .qrisImage {
-      width: 150px;
-      height: 150px;
-      margin-bottom: -10px;
-    }
-  
-    .cardTimer {
-      padding: 12px;
-    }
-  
-    .timer p {
-      font-size: 16px; /* Adjust font size for timer */
-    }
-  
-    .whatsappButton {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .pageWrapper {
-    margin-top: 0;
-      padding: 0 5px; /* Add more padding for very small screens */
-    }
-  
-    .container {
-        margin-bottom: 120px;
-      padding: 10px; /* Reduce padding for very small screens */
-    }
-  
-    .title {
-      font-size: 16px; /* Further reduce title size for very small screens */
-    }
+.card {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
 
-    .card{
-        font-size: 14px;
-    }
-  
-    .bookingDetails p {
-      font-size: 12px; /* Adjust for smaller screens */
-    }
-  
-    .qrisImage {
-      width: 130px;
-      height: 130px; /* Further reduce QR image size */
-    }
-  
-    .whatsappButton {
-      padding: 8px 14px;
-      font-size: 12px; /* Reduce button font size */
-    }
-  }
-  
+.payButton {
+  background-color: #10b981; /* Tailwind green-500 */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+.payButton:hover {
+  background-color: #059669; /* Tailwind green-600 */
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
