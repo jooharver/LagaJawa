@@ -59,20 +59,30 @@ const SettingPage = () => {
     <div className={styles.container}>
       <main className={styles.mainContent}>
         <header className={styles.header}>
-          <h2>Akun</h2>
+          <h2>Profile Pengguna</h2>
         </header>
 
         {isLoggedIn ? (
           <>
             {/* Info Akun */}
             <section className={styles.profileSection}>
-              <h3>Informasi Akun</h3>
-              <p><strong>Nama     :</strong> {userData.name}</p>
-              <p><strong>Email    :</strong> {userData.email}</p>
-              <p><strong>Nomor HP :</strong> {userData.phone}</p>
+              <h2>Informasi Akun</h2>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Nama</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>Muhammad Rifky</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Email</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>muh.rifky.harto@gmail.com</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Nomor HP</span>
+                <span className={styles.separator}>:</span>
+                <span className={styles.value}>0895600389272</span>
+              </div>
             </section>
-
-            <div className={styles.divider}></div>
 
             <section className={styles.loggedInSection}>
               <button
@@ -132,12 +142,18 @@ const SettingPage = () => {
           <p>Tim dukungan kami siap membantu Anda</p>
           <button
             className={styles.contactButton}
-            onClick={() => router.push('/contact')}
+            onClick={() =>
+              window.open(
+                "https://wa.me/62895600389272?text=Halo%20Admin,%20saya%20butuh%20bantuan%20dengan%20pemesanan%20Lapangan%20Futsal.",
+                "_blank"
+              )
+            }
           >
-            <PhoneCall size={18} />
+            <PhoneCall size={18} style={{ marginRight: "8px" }} />
             CONTACT SUPPORT
           </button>
         </section>
+
 
         <div className={styles.divider}></div>
 
@@ -156,6 +172,10 @@ const SettingPage = () => {
             </a>
           </div>
         </section>
+        <footer className={styles.footer}>
+          <p>&copy; {new Date().getFullYear()} LJ Futsal. All rights reserved.</p>
+        </footer>
+
       </main>
     </div>
   );

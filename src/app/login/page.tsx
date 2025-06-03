@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './LoginGallery.module.css';
 
-
 const galleryItems = [
   {
     id: 1,
@@ -27,10 +26,7 @@ const galleryItems = [
 ];
 
 export default function LoginGallery() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -62,10 +58,11 @@ export default function LoginGallery() {
         return;
       }
 
-      // Simpan token JWT ke localStorage untuk session management
+      // ✅ Simpan user dan token ke localStorage
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect ke halaman booking atau halaman setelah login
+      // 🔁 Redirect ke halaman setelah login
       router.push('/booking');
     } catch (err) {
       setError('Terjadi kesalahan pada server. Silakan coba lagi.');
@@ -127,16 +124,8 @@ export default function LoginGallery() {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={styles.button}
-          >
-            {isLoading ? (
-              <span className={styles.spinner}></span>
-            ) : (
-              'Masuk'
-            )}
+          <button type="submit" disabled={isLoading} className={styles.button}>
+            {isLoading ? <span className={styles.spinner}></span> : 'Masuk'}
           </button>
         </form>
 
@@ -150,7 +139,7 @@ export default function LoginGallery() {
       <div className={styles.gallerySection}>
         <div className={styles.sliderContainer}>
           <div className={styles.slider} ref={sliderRef}>
-            {galleryItems.map((item, index) => (
+            {galleryItems.map((item) => (
               <div
                 key={item.id}
                 className={styles.slide}
@@ -165,10 +154,7 @@ export default function LoginGallery() {
           </div>
 
           <div className={styles.sliderControls}>
-            <button onClick={prevSlide} className={styles.controlButton}>
-              &lt;
-            </button>
-
+            <button onClick={prevSlide} className={styles.controlButton}>&lt;</button>
             <div className={styles.dots}>
               {galleryItems.map((_, index) => (
                 <button
@@ -178,10 +164,7 @@ export default function LoginGallery() {
                 />
               ))}
             </div>
-
-            <button onClick={nextSlide} className={styles.controlButton}>
-              &gt;
-            </button>
+            <button onClick={nextSlide} className={styles.controlButton}>&gt;</button>
           </div>
         </div>
       </div>
