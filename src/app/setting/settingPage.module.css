@@ -5,7 +5,7 @@
   padding: 1rem;
   font-family: Poppins, sans-serif;
   border-radius: 8px;
-
+  max-height: 100dvh;
   margin-bottom: 100px;
 }
 
@@ -55,8 +55,8 @@
 .contactButton {
   width: 100%;
   padding: 0.75rem;
-  background: #ff9100;
-  color: rgb(0, 0, 0);
+  background: #1ca977;
+  color: white;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
@@ -68,25 +68,22 @@
   justify-content: center;
   height: 46px;
   gap: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* shadow hijau transparan */
 
 }
-
-.contactButton:hover {
-  background-color: #ffffff;
-  transition: background-color 0.3s ease;
-  transform: translateY(-2px);
-  color: #000000;
-}
-
 
 .loginButton:hover,
 .logoutButton:hover,
-.viewAllButton:hover {
-  background-color: #ffffff;
-  transition: background-color 0.3s ease;
+.viewAllButton:hover,
+.contactButton:hover {
+  background-color: #017a10;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   transform: translateY(-2px);
-  color : #000000;
+  color: white;
+  box-shadow: 0 8px 15px rgba(1, 122, 16, 0.4); /* shadow hijau transparan */
 }
+
+
 
 .loginNote {
   font-size: 0.9rem;
@@ -125,7 +122,7 @@
 
 .socialLink {
   background-color: #ffffff;
-  color: #ff9100;
+  color: #1ca977;
   text-decoration: none;
   font-weight: 600;
   padding: 10px 16px;
@@ -136,6 +133,36 @@
   align-items: center;
   gap: 10px;
 
+}
+.profileSection {
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.infoRow {
+  display: grid;
+  grid-template-columns: 120px 10px 1fr;
+  margin-bottom: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.separator {
+  text-align: center;
+}
+
+.value {
+  word-break: break-word;
+}
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  border-top: 1px solid #eee;
 }
 
 
@@ -148,6 +175,7 @@
   
   .mainContent {
     padding: 1rem 1.5rem;
+    padding-bottom: 60px;
   }
   
   .socialIcons {
@@ -184,6 +212,8 @@
   .transactionTable {
     overflow-x: auto;
   }
+
+  
 }
 
 @media (max-width: 400px) {
