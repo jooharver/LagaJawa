@@ -4,6 +4,28 @@
   padding: 20px;
 }
 
+.page{
+  background-color: lightgrey;
+}
+
+.card{
+  background-color: white; /* Atau warna lain */
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin: 32px auto;
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+    margin: 16px;
+  }
+}
+
 .bannerSection {
   position: relative;
   width: 100%;

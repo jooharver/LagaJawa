@@ -79,22 +79,22 @@ export default async function AktivitasPage() {
   const acara = await getBeritaEvent();
 
   return (
-    <main className={styles.container}>
-      {/* Hero Section */}
-      <section className={styles.heroSection}>
+    <>
+    {/* Hero Section */}
+    <section className={styles.heroSection}>
+      <div className={styles.heroContent}>
         <div className={styles.heroText}>
-          <h1>Aktivitas Laga Jawa</h1>
-          <p>Jelajahi komunitas dan acara futsal terbaik dari berbagai penjuru Jawa.</p>
+          <h1>Aktivitas LJ Futsal</h1>
+          <p>Jelajahi berbagai komunitas dan acara yang ada di LJ Futsal.</p>
         </div>
-        <div className={styles.heroImage}>
-          <img src="/images/Futsal.jpg" alt="Aktivitas" />
-        </div>
-      </section>
+      </div>
+    </section>
 
+    <main className={styles.container}>
       {/* Komunitas Section */}
       <section className={styles.section}>
         <h2>Komunitas</h2>
-        <p>Berbagai komunitas futsal aktif yang dapat kamu ikuti dan ikuti kegiatannya.</p>
+        <p>Berbagai komunitas futsal aktif yang dapat kamu ikuti kegiatannya.</p>
         <div className={styles.itemGrid}>
           {komunitas.slice(0, 5).map((item) => ( 
             <Link key={item.id} href={`/aktivitas/komunitas/${item.id}`} className={styles.aktivitasCard}>
@@ -103,7 +103,7 @@ export default async function AktivitasPage() {
             </Link>
           ))}
         </div>
-        <Link href="/aktivitas/komunitas" className={styles.moreButton}>Lihat Selengkapnya</Link>
+        <Link href="/aktivitas/komunitas" className={styles.moreButton}>Selengkapnya</Link>
       </section>
 
       {/* Acara Section */}
@@ -118,8 +118,9 @@ export default async function AktivitasPage() {
             </Link>
           ))}
         </div>
-        <Link href="/aktivitas/acara" className={styles.moreButton}>Lihat Selengkapnya</Link>
+        <Link href="/aktivitas/acara" className={styles.moreButton}>Selengkapnya</Link>
       </section>
     </main>
+    </>
   );
 }

@@ -55,26 +55,30 @@ export default function DetailAcaraPage() {
   if (!event) return <p>Acara tidak ditemukan atau bukan kategori event.</p>;
 
   return (
-    <div className={styles.container}>
-      <section className={styles.imageSection}>
-        <img
-          src={`http://localhost:8000/storage/${event.image}`}
-          alt={event.judul}
-        />
-      </section>
+    <div className={styles.page}>
+      <div className={styles.card}>
+      <div className={styles.container}>
+        <section className={styles.imageSection}>
+          <img
+            src={`http://localhost:8000/storage/${event.image}`}
+            alt={event.judul}
+          />
+        </section>
 
-      <section className={styles.titleSection}>
-        <h1>{event.judul}</h1>
-        <h2>{event.sub_judul}</h2>
-      </section>
+        <section className={styles.titleSection}>
+          <h1>{event.judul}</h1>
+          <h2>{event.sub_judul}</h2>
+        </section>
 
-      <section className={styles.metaSection}>
-        <p>{event.tempat}, {formatDateDMY(event.tanggal)}</p>
-      </section>
+        <section className={styles.metaSection}>
+          <p>{event.tempat}, {formatDateDMY(event.tanggal)}</p>
+        </section>
 
-      <section className={styles.descriptionSection}>
-        <p>{event.deskripsi}</p>
-      </section>
+        <section className={styles.descriptionSection}>
+          <p>{event.deskripsi}</p>
+        </section>
+      </div>
+    </div>
     </div>
   );
 }

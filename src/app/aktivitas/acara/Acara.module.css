@@ -94,7 +94,7 @@
 }
 
 .paginationSection button {
-  background-color: #0070f3;
+  background-color: #00920c;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -104,7 +104,7 @@
 }
 
 .paginationSection button:disabled {
-  background-color: #aaa;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 

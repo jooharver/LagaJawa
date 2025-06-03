@@ -61,6 +61,9 @@
   padding: 8px 16px;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #00920c;
+  color: white;
+  border-radius: 8px;
 }
 
 .pagination button:disabled {

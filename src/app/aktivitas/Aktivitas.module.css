@@ -6,27 +6,35 @@
   gap: 40px;
   padding: 100px;
   background-color: #f9f9f9;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .heroSection {
   display: flex;
   height: 100vh;
+  width: 99vw;
   align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(to right, #017a10, #000428);
+  justify-content: flex-start;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.3) 70%, transparent),
+    url('/images/Futsal.jpg'); /* Pastikan file ada di public/images */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
-  padding-top: 80px; ;
-  padding-left: 100px; 
-  padding-right: 100px;
-  position: relative;
+  overflow: hidden;
 }
 
+.heroContent {
+  padding-left: 100px;
+  padding-right: 100px;
+  max-width: 1440px;
+  width: 100%;
+}
 
-
-.heroText {
-  flex: 1;
+.heroOverlay {
+  max-width: 600px;
   z-index: 2;
-  position: relative;
 }
 
 .heroText h1 {
@@ -37,20 +45,6 @@
 .heroText p {
   font-size: 1.25rem;
   max-width: 500px;
-}
-
-.heroImage {
-  flex: 1;
-  position: relative;
-}
-
-.heroImage img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  opacity: 0.7;
-  mix-blend-mode: lighten;
-  filter: blur(1px);
 }
 
 .section {
@@ -121,7 +115,7 @@
 .moreButton {
   margin-top: 1rem;
   display: inline-block;
-  background-color: #004e92;
+  background-color: #00920c;
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -130,5 +124,5 @@
 }
 
 .moreButton:hover {
-  background-color: #003366;
+  background-color: #0f6600;
 }

@@ -9,6 +9,7 @@ type EventItem = {
   judul: string;
   tanggal: string;
   image: string;
+  kategori: string;
 };
 
 const PAGE_SIZE = 5;
@@ -28,10 +29,15 @@ export default function AcaraPage() {
         if (!res.ok) throw new Error("Failed to fetch data");
         const json = await res.json();
 
-        const eventData = json.data.data || [];
-        setAllEvents(eventData);
+         const eventData = json.data.data || [];
 
-        setTotalPages(Math.ceil(eventData.length / PAGE_SIZE));
+        // ✅ Filter agar hanya data dengan kategori 'event' yang masuk
+        const filteredEvents = eventData.filter(
+          (item: EventItem) => item.kategori === "event"
+        );
+
+        setAllEvents(filteredEvents);
+        setTotalPages(Math.ceil(filteredEvents.length / PAGE_SIZE));
       } catch (error) {
         console.error(error);
         setAllEvents([]);

@@ -10,7 +10,7 @@ import { FaHome, FaUser, FaShoppingBag, FaCalendarAlt, FaNewspaper } from 'react
 // Tambahkan label untuk mobile menu
 const mobileMenu = [
   { icon: FaHome, label: 'Home', href: '/' },
-  { icon: FaShoppingBag, label: 'Activities', href: '/activities' },
+  { icon: FaShoppingBag, label: 'Activities', href: '/aktivitas' },
   { icon: FaNewspaper, label: 'News', href: '/news' },
   { icon: FaCalendarAlt, label: 'Booking', href: '/booking' },
   { icon: FaUser, label: 'Account', href: '/setting' },
@@ -25,7 +25,7 @@ export default function Navbar() {
 
   const menu = [
     { label: 'Home', href: '/' },
-    { label: 'Activities', href: '/activities' },
+    { label: 'Activities', href: '/aktivitas' },
     { label: 'News', href: '/news' },
     { label: 'Booking', href: '/booking' },
     { label: 'Account', href: '/setting' }  // Menambahkan menu Booking untuk desktop     // Menambahkan menu Event untuk desktop
