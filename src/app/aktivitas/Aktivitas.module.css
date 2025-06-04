@@ -126,3 +126,60 @@
 .moreButton:hover {
   background-color: #0f6600;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 20px;
+  }
+
+  .heroSection {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    width: 100vw;
+    padding: 60px 20px;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 80%, transparent),
+      url('/images/Futsal.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .heroContent {
+    padding: 0 20px;
+  }
+
+  .heroOverlay {
+    max-width: 100%;
+  }
+
+  .heroText h1 {
+    font-size: 2rem;
+  }
+
+  .heroText p {
+    font-size: 1rem;
+  }
+
+  .itemGrid {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  .aktivitasCard {
+    width: 90%;
+    height: auto;
+  }
+
+  .cardImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .moreButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
