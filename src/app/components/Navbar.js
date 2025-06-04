@@ -1,108 +1,73 @@
-'use client'; // Untuk Next.js App Router
+'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import styles from './Navbar.module.css';
-import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { FaHome, FaUser, FaShoppingBag, FaCalendarAlt, FaNewspaper } from 'react-icons/fa';
+import Image from 'next/image';
+import styles from './Navbar.module.css';
+import {
+  Home,
+  CalendarCheck,
+  ClipboardList,
+  Newspaper,
+  User
+} from 'lucide-react';
 
-// Tambahkan label untuk mobile menu
-const mobileMenu = [
-  { icon: FaHome, label: 'Home', href: '/' },
-  { icon: FaShoppingBag, label: 'Activities', href: '/aktivitas' },
-  { icon: FaNewspaper, label: 'News', href: '/news' },
-  { icon: FaCalendarAlt, label: 'Booking', href: '/booking' },
-  { icon: FaUser, label: 'Account', href: '/setting' },
+import { useEffect, useState } from 'react';
+
+const menuItems = [
+  { label: 'Home', href: '/', icon: <Home size={24} /> },
+  { label: 'Activities', href: '/aktivitas', icon: <ClipboardList size={24} /> },
+  { label: 'Booking', href: '/booking', icon: <CalendarCheck size={24} /> },
+  { label: 'News', href: '/news', icon: <Newspaper size={24} /> },
+  { label: 'Account', href: '/setting', icon: <User size={24} /> },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(2); // Default ke item ke-3 (index 2)
-  const navRef = useRef(null);
-  const liRefs = useRef([]);
-
-  const menu = [
-    { label: 'Home', href: '/' },
-    { label: 'Activities', href: '/aktivitas' },
-    { label: 'News', href: '/news' },
-    { label: 'Booking', href: '/booking' },
-    { label: 'Account', href: '/setting' }  // Menambahkan menu Booking untuk desktop     // Menambahkan menu Event untuk desktop
-  ];
+  const pathname = usePathname();
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 768);
+    }
 
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
+    handleResize(); // check on mount
 
-    window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    if (liRefs.current[activeIndex]) {
-      const offsetLeft = liRefs.current[activeIndex].offsetLeft;
-      navRef.current.style.setProperty('--position-x-active', `${offsetLeft}px`);
-    }
-  }, [activeIndex]);
-
-  if (isDesktop) {
-    return (
-      <motion.nav
-        className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
+  return (
+    <nav className={styles.navbar}>
+      <div className={`${styles.desktopNavbar} ${isMobile ? styles.hide : ''}`}>
         <div className={styles.logo}>
-          <Link href="/">
-            <Image src="/images/logo.png" alt="Logo" width={250} height={50} />
-          </Link>
+          <Image src="/images/logo.png" alt="Laga Jawa Futsal Logo" width={210} height={40} />
         </div>
-        <ul className={styles.navMenu}>
-          {menu.map(({ label, href }) => (
-            <li key={href}>
-              <Link href={href} className={styles.navLink}>
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </motion.nav>
-    );
-  } else {
-    return (
-      <nav ref={navRef} className={styles.mobileNavbar}>
-        <ul className={styles.navList}>
-          {mobileMenu.map(({ icon: Icon, label, href }, index) => (
-            <li
-              key={index}
-              ref={(el) => (liRefs.current[index] = el)}
-              className={activeIndex === index ? styles.active : ''}
-              onClick={() => setActiveIndex(index)}
+        <div className={styles.menu}>
+          {menuItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.menuItem} ${pathname === item.href ? styles.active : ''}`}
             >
-              <Link href={href} className={styles.navLink}>
-                <Icon size={16} />
-                <span className={styles.iconLabel}>{label}</span>
-              </Link>
-            </li>
+              {item.label}
+            </Link>
           ))}
-        </ul>
-        <div className={styles.effect}>
-          <div className={styles.circle}></div>
         </div>
-      </nav>
-    );
-  }
+      </div>
+
+      <div className={`${styles.mobileNavbar} ${isMobile ? styles.show : ''}`}>
+        {menuItems.map(item => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`${styles.mobileItem} ${pathname === item.href ? styles.active : ''}`}
+          >
+            {item.icon}
+            <span className={styles.mobileLabel}>{item.label}</span>
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
 }
