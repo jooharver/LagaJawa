@@ -1,5 +1,5 @@
 'use client';
-import styles from './newsdetail.module.css';
+import styles from './news.module.css';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
