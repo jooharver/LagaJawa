@@ -286,7 +286,13 @@ useEffect(() => {
 
     <div className="location-info">
       <div className="info-box">
-        <img src="/images/ball-sphere.png" alt="Icon Futsal" className="location-icon" />
+        <Image
+        src="/images/ball-sphere.png"
+        alt="Icon Futsal"
+        width={32} // ganti sesuai kebutuhan
+        height={32} // ganti sesuai kebutuhan
+        className="location-icon"
+      />
         <div>
           <h3 className="info-title">LAGA JAWA FUTSAL</h3>
           <p className="info-address">Jl. Soekarno Hatta, Lowokwaru, Kota Malang</p>

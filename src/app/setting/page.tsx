@@ -10,7 +10,7 @@ const SettingPage = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
+  const [setUserData] = useState({ name: '', email: '', phone: '' });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
