@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -6,11 +6,24 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET environment variable is not set.');
 }
 
-export function verifyToken(token: string): { userId: number; email: string } {
+interface TokenPayload extends JwtPayload {
+  userId: number;
+  email: string;
+}
+
+export function verifyToken(token: string): TokenPayload {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET as string) as unknown as { userId: number; email: string };
+    // Verifikasi token, lalu casting ke TokenPayload
+    const decoded = jwt.verify(token, JWT_SECRET as string) as unknown as TokenPayload;
+
+    if (!decoded.userId || !decoded.email) {
+      throw new Error('Token payload is missing required fields');
+    }
+
     return decoded;
-  } catch (error) {
-    throw new Error('Invalid token');
+  } catch (err) {
+    // Pastikan variabel error dipakai untuk menghindari warning
+    console.error('Token verification failed:', err);
+    throw new Error('Invalid or expired token');
   }
 }

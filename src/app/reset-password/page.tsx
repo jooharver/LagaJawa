@@ -1,28 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import styles from './resetPassword.module.css'; // Ganti dengan path CSS yang sesuai
+import styles from './resetPassword.module.css'; // Pastikan path benar
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const token = searchParams.get('token') || '';
+  // Ambil token dari query string, fallback ke string kosong jika null
+  const token: string = searchParams.get('token') ?? '';
 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [success, setSuccess] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!token) {
       setError('Token reset password tidak ditemukan. Link mungkin sudah tidak valid.');
+    } else {
+      setError(''); // Reset error kalau token valid
     }
   }, [token]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -37,24 +40,30 @@ export default function ResetPasswordPage() {
       return;
     }
 
+    if (!token) {
+      setError('Token reset password tidak ditemukan atau tidak valid.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const res = await fetch('/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, password }),
-      });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password }),
+    });
 
-      const data = await res.json();
+
+      const data: { message?: string } = await res.json();
 
       if (!res.ok) {
-        setError(data.message || 'Gagal mereset password');
+        setError(data.message ?? 'Gagal mereset password');
       } else {
         setSuccess('Password berhasil diubah. Anda akan diarahkan ke halaman login...');
         setTimeout(() => router.push('/login'), 3000);
       }
-    } catch (err) {
+    } catch  {
       setError('Terjadi kesalahan saat mengirim permintaan');
     } finally {
       setIsLoading(false);
@@ -71,27 +80,31 @@ export default function ResetPasswordPage() {
       {!success && (
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>
+            <label className={styles.label} htmlFor="password">
               Password Baru:
               <input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className={styles.input}
+                minLength={6}
               />
             </label>
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>
+            <label className={styles.label} htmlFor="confirmPassword">
               Konfirmasi Password:
               <input
+                id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className={styles.input}
+                minLength={6}
               />
             </label>
           </div>

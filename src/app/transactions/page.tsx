@@ -93,29 +93,32 @@ export default function Transactions() {
       ) : (
         <div className={styles.cardContainer}>
           {transactions.map((trx) => (
-            <div key={trx.id_transaction} className={styles.card}>
-              <div className={styles.cardHeader}>
-                <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
-                <span className={`${styles.status} ${styles[trx.payment_status]}`}>
-                  {mapPaymentStatusLabel(trx.payment_status)}
-                </span>
-              </div>
-              <div className={styles.detailsGrid}>
-                <div>No Pemesanan: {trx.no_pemesanan}</div>
-                <div>Metode: {trx.payment_method.toUpperCase()}</div>
-                <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
-                <div>
-                  Dibayar: {trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Belum Dibayar'}
-                </div>
-              </div>
-              <button
-                onClick={() => router.push(`/api/transaction/${trx.id_transaction}`)}
-                className={styles.detailButton}
-              >
-                Lihat Rincian
-              </button>
-            </div>
-          ))}
+  <div key={trx.id_transaction} className={styles.card}>
+    <div className={styles.cardHeader}>
+      <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
+      <span className={`${styles.status} ${styles[trx.payment_status]}`}>
+        {mapPaymentStatusLabel(trx.payment_status)}
+      </span>
+    </div>
+    <div className={styles.detailsGrid}>
+      <div>No Pemesanan: {trx.no_pemesanan}</div>
+      <div>Metode: {trx.payment_method.toUpperCase()}</div>
+      <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
+      <div>
+        Dibayar: {trx.payment_status === 'paid' 
+          ? (trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Sudah Dibayar') 
+          : 'Belum Dibayar'}
+      </div>
+    </div>
+    <button
+      onClick={() => router.push(`/transactions/${trx.id_transaction}`)}
+      className={styles.detailButton}
+    >
+      Lihat Rincian
+    </button>
+  </div>
+))}
+
         </div>
       )}
     </div>

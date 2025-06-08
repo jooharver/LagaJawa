@@ -2,6 +2,7 @@
 import styles from './newsdetail.module.css';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type News = {
   id_news: number;
@@ -15,7 +16,6 @@ type News = {
 };
 
 const NewsDetailPage = () => {
-  const router = useRouter();
   const params = useParams();
   const id = params?.id;
 
@@ -29,8 +29,9 @@ const NewsDetailPage = () => {
       try {
         const res = await fetch(`/api/news/${id}`);
         if (!res.ok) throw new Error('Berita tidak ditemukan');
-        const data = await res.json();
-        setNews(data);
+        const json = await res.json();
+        setNews(json.data); // 👈 ambil properti 'data' di respons API
+
       } catch (err) {
         if (err instanceof Error) {
           console.error(err.message);
@@ -56,15 +57,20 @@ const NewsDetailPage = () => {
         <h1 className={styles.title}>{news.judul}</h1>
 
         <div className={styles.separator}></div>
-        <img
-            src={`http://localhost:8000/storage/${news.image}`}
-            alt={news.judul}
-            className={styles.newsImage}
+          <div className={styles.imageWrapper}>
+            <Image
+              src={`http://localhost:8000/storage/${news.image}`}
+              alt={news.judul}
+              fill
+              className={styles.image}
             />
+          </div>
+
 
         <div className={styles.metaInfo}>
             <span>{new Date(news.tanggal).toLocaleDateString('id-ID', { dateStyle: 'long' })}</span>
-            <span>{news.kategori.toUpperCase()}</span>
+            <span>{news.kategori ? news.kategori.toUpperCase() : ''}</span>
+
             <span>{news.tempat}</span>
         </div>
 

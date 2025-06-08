@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './news.module.css';
+import Image from 'next/image';
 
 type NewsItem = {
   id_news: number;
@@ -73,9 +74,11 @@ const NewsMenu = () => {
           filteredNews.map((item) => (
             <div key={item.id_news} className={styles.newsItem}>
               <div className={styles.imageButtonWrapper}>
-                <img
+                <Image
                   src={`http://localhost:8000/storage/${item.image}`}
                   alt={item.judul}
+                  width={300}
+                  height={200}
                   className={styles.newsImage}
                 />
                 <button

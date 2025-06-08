@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './LoginGallery.module.css';
 
 const galleryItems = [
@@ -9,25 +11,24 @@ const galleryItems = [
     id: 1,
     title: 'Tempat Nyaman',
     description: 'comfortable place to play',
-    image: '/images/court1.jpg'
+    image: '/images/court1.jpg',
   },
   {
     id: 2,
     title: 'Kemudahan dalam pemesanan',
     description: 'easy booking to suit your needs',
-    image: '/images/court2.jpg'
+    image: '/images/court2.jpg',
   },
   {
     id: 3,
     title: 'Akses mudah',
     description: 'easy access to the location',
-    image: '/images/OIP.jpeg'
+    image: '/images/OIP.jpeg',
   },
 ];
 
 export default function LoginGallery() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -35,41 +36,46 @@ export default function LoginGallery() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  e.preventDefault();
+  setIsLoading(true);
 
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.message || 'Login gagal. Periksa email dan password.');
-        setIsLoading(false);
-        return;
-      }
-
-      // ✅ Simpan user dan token ke localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      // 🔁 Redirect ke halaman setelah login
-      router.push('/booking');
-    } catch (err) {
-      setError('Terjadi kesalahan pada server. Silakan coba lagi.');
-    } finally {
+    if (!response.ok) {
+      toast.error(data.message || 'Login gagal. Periksa email dan password.');
       setIsLoading(false);
+      return;
     }
-  };
+
+    localStorage.clear();
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    toast.success('Login berhasil!');
+
+    // Delay 2 detik baru redirect ke halaman /booking
+    setTimeout(() => {
+      router.push('/booking');
+    }, 2000);
+
+  } catch (err) {
+    console.error('Login error:', err);
+    toast.error('Terjadi kesalahan pada server. Silakan coba lagi.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -93,8 +99,6 @@ export default function LoginGallery() {
       <div className={styles.loginSection}>
         <h1>Masuk</h1>
         <h2>Silahkan masuk atau daftar untuk melanjutkan pemesanan lapangan</h2>
-
-        {error && <div className={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
@@ -125,7 +129,7 @@ export default function LoginGallery() {
           </div>
 
           <button type="submit" disabled={isLoading} className={styles.button}>
-            {isLoading ? <span className={styles.spinner}></span> : 'Masuk'}
+            {isLoading ? <span>Loading...</span> : 'Masuk'}
           </button>
         </form>
 
@@ -154,7 +158,9 @@ export default function LoginGallery() {
           </div>
 
           <div className={styles.sliderControls}>
-            <button onClick={prevSlide} className={styles.controlButton}>&lt;</button>
+            <button onClick={prevSlide} className={styles.controlButton}>
+              &lt;
+            </button>
             <div className={styles.dots}>
               {galleryItems.map((_, index) => (
                 <button
@@ -164,10 +170,26 @@ export default function LoginGallery() {
                 />
               ))}
             </div>
-            <button onClick={nextSlide} className={styles.controlButton}>&gt;</button>
+            <button onClick={nextSlide} className={styles.controlButton}>
+              &gt;
+            </button>
           </div>
         </div>
       </div>
+
+      {/* ToastContainer harus ada agar notifikasi toast muncul */}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

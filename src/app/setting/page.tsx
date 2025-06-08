@@ -6,11 +6,17 @@ import { useRouter } from 'next/navigation';
 import styles from './settingPage.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+interface UserProfile {
+  name: string;
+  email: string;
+  phone?: string;
+}
+
 const SettingPage = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
+  const [userData, setUserData] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -19,12 +25,6 @@ const SettingPage = () => {
       fetchUserProfile(token);
     }
   }, []);
-
-  interface UserProfile {
-    name: string;
-    email: string;
-    phone: string;
-  }
 
   const fetchUserProfile = async (token: string): Promise<void> => {
     try {
@@ -50,6 +50,7 @@ const SettingPage = () => {
     setTimeout(() => {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
+      setUserData(null);
       setIsLoggingOut(false);
       router.push('/login');
     }, 1000);
@@ -70,17 +71,17 @@ const SettingPage = () => {
               <div className={styles.infoRow}>
                 <span className={styles.label}>Nama</span>
                 <span className={styles.separator}>:</span>
-                <span className={styles.value}>Muhammad Rifky</span>
+                <span className={styles.value}>{userData?.name || '-'}</span>
               </div>
               <div className={styles.infoRow}>
                 <span className={styles.label}>Email</span>
                 <span className={styles.separator}>:</span>
-                <span className={styles.value}>muh.rifky.harto@gmail.com</span>
+                <span className={styles.value}>{userData?.email || '-'}</span>
               </div>
               <div className={styles.infoRow}>
                 <span className={styles.label}>Nomor HP</span>
                 <span className={styles.separator}>:</span>
-                <span className={styles.value}>0895600389272</span>
+                <span className={styles.value}>{userData?.phone || '-'}</span>
               </div>
             </section>
 
@@ -144,16 +145,15 @@ const SettingPage = () => {
             className={styles.contactButton}
             onClick={() =>
               window.open(
-                "https://wa.me/62895600389272?text=Halo%20Admin,%20saya%20butuh%20bantuan%20dengan%20pemesanan%20Lapangan%20Futsal.",
-                "_blank"
+                'https://wa.me/62895600389272?text=Halo%20Admin,%20saya%20butuh%20bantuan%20dengan%20pemesanan%20Lapangan%20Futsal.',
+                '_blank'
               )
             }
           >
-            <PhoneCall size={18} style={{ marginRight: "8px" }} />
+            <PhoneCall size={18} style={{ marginRight: '8px' }} />
             CONTACT SUPPORT
           </button>
         </section>
-
 
         <div className={styles.divider}></div>
 
@@ -175,7 +175,6 @@ const SettingPage = () => {
         <footer className={styles.footer}>
           <p>&copy; {new Date().getFullYear()} LJ Futsal. All rights reserved.</p>
         </footer>
-
       </main>
     </div>
   );

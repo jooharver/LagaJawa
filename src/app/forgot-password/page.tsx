@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
       }
 
       // Panggil API endpoint
-      const response = await fetch('/api/auth/forgot-password', {
+      const response = await fetch('/api/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

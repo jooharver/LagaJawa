@@ -1,5 +1,7 @@
+// app/transactions/layout.tsx
+'use client';
 import { Poppins } from "next/font/google";
-import "./transaction.module.css"; // jangan lupa import css juga kalau perlu
+import "../globals.css"; // sesuaikan jika perlu
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -8,23 +10,13 @@ const poppins = Poppins({
 
 export default function TransactionsLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-      </head>
-      <body className={poppins.className}>
-        {/* Tidak render Navbar di sini */}
-        <main className="pt-20">{children}</main>
-      </body>
-    </html>
+    // Jangan pakai <html> atau <body> di sini
+    <div className={poppins.className}>
+      <main className="pt-20">{children}</main>
+    </div>
   );
 }
