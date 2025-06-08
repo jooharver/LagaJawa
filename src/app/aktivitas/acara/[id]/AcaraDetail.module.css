@@ -67,3 +67,34 @@
   line-height: 1.6;
   text-align: left;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .imageSection img {
+    aspect-ratio: 16/9;
+    height: auto;
+  }
+
+  .titleSection h1 {
+    font-size: 1.5rem;
+  }
+
+  .titleSection h2 {
+    font-size: 1rem;
+  }
+
+  .titleSection {
+    margin-bottom: 24px;
+  }
+
+  .metaSection {
+    font-size: 0.9rem;
+  }
+
+  .descriptionSection {
+    font-size: 0.95rem;
+  }
+}

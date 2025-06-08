@@ -4,12 +4,12 @@
   padding: 20px;
 }
 
-.page{
+.page {
   background-color: lightgrey;
 }
 
-.card{
-  background-color: white; /* Atau warna lain */
+.card {
+  background-color: white;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 24px;
@@ -19,10 +19,64 @@
   z-index: 1;
 }
 
+/* Tambahan responsif card */
 @media (max-width: 768px) {
   .card {
     padding: 16px;
     margin: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-top: 40px;
+  }
+
+  .logo {
+    width: 90px;
+    height: 90px;
+    border: 3px solid white;
+    bottom: -30px;
+  }
+
+  .bannerSection {
+    height: 180px;
+    margin-bottom: 40px;
+  }
+
+  .banner {
+    border-radius: 8px;
+  }
+
+  .joinButton {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+
+/* Untuk perangkat kecil */
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+    margin-top: 80px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-top: 30px;
+  }
+
+  .adminSection {
+    font-size: 0.9rem;
+  }
+
+  .deskripsi h3,
+  .gallery h3 {
+    font-size: 1rem;
+  }
+
+  .galleryImage {
+    height: auto;
+    max-height: 300px;
   }
 }
 

@@ -1,6 +1,9 @@
 /* home.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+.homepage{
+  padding-top: 80px;
+}
 /* HERO SECTION */
 body {
   margin: 0;
@@ -526,6 +529,11 @@ left{
 @media (max-width: 768px) {
   .gallery-banner {
     background-image: url('/images/flyerMobile.png');
+  }
+
+  .homepage{
+    padding-top: 0;
+    padding-bottom: 60px;
   }
 }
 

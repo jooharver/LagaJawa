@@ -1,7 +1,7 @@
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding-top: 80px;
+  padding: 80px 20px 0 20px; /* Tambahkan padding horizontal */
   text-align: center;
 }
 
@@ -19,9 +19,10 @@
   color: #555;
 }
 
+/* Ubah grid agar auto-fit berdasarkan ukuran minimal */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
 }
 
@@ -31,6 +32,7 @@
   padding: 10px;
   border-radius: 8px;
   transition: box-shadow 0.2s ease;
+  background-color: white;
 }
 
 .card:hover {
@@ -55,6 +57,7 @@
   display: flex;
   justify-content: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .pagination button {
@@ -63,10 +66,39 @@
   cursor: pointer;
   background-color: #00920c;
   color: white;
+  border: none;
   border-radius: 8px;
 }
 
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Responsif tambahan untuk layar kecil */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .image {
+    height: 120px;
+  }
+
+  .cardTitle {
+    font-size: 1rem;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .pagination button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
 }
