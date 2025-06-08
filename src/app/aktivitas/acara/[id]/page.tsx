@@ -1,9 +1,9 @@
-// src/app/aktivitas/acara/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import styles from "./AcaraDetail.module.css";
+import Image from "next/image";
 
 type EventDetail = {
   id_news: number;
@@ -34,7 +34,6 @@ export default function DetailAcaraPage() {
         const res = await fetch(`http://localhost:8000/api/news/${id}`);
         const json = await res.json();
 
-        // Pastikan hanya event yang diterima
         if (json.data.kategori !== "event") {
           setEvent(null);
         } else {
@@ -57,28 +56,33 @@ export default function DetailAcaraPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-      <div className={styles.container}>
-        <section className={styles.imageSection}>
-          <img
-            src={`http://localhost:8000/storage/${event.image}`}
-            alt={event.judul}
-          />
-        </section>
+        <div className={styles.container}>
+          <section className={styles.imageSection}>
+            <Image
+              src={`http://localhost:8000/storage/${event.image}`}
+              alt={event.judul}
+              width={600}    // sesuaikan ukuran yang diinginkan
+              height={400}   // sesuaikan ukuran yang diinginkan
+              style={{ objectFit: "cover", borderRadius: "8px" }}
+            />
+          </section>
 
-        <section className={styles.titleSection}>
-          <h1>{event.judul}</h1>
-          <h2>{event.sub_judul}</h2>
-        </section>
+          <section className={styles.titleSection}>
+            <h1>{event.judul}</h1>
+            <h2>{event.sub_judul}</h2>
+          </section>
 
-        <section className={styles.metaSection}>
-          <p>{event.tempat}, {formatDateDMY(event.tanggal)}</p>
-        </section>
+          <section className={styles.metaSection}>
+            <p>
+              {event.tempat}, {formatDateDMY(event.tanggal)}
+            </p>
+          </section>
 
-        <section className={styles.descriptionSection}>
-          <p>{event.deskripsi}</p>
-        </section>
+          <section className={styles.descriptionSection}>
+            <p>{event.deskripsi}</p>
+          </section>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
