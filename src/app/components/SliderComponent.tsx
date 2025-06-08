@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const SliderComponent = () => {
   return (
@@ -29,7 +30,12 @@ const SliderComponent = () => {
         <div className="list">
           {Array.from({ length: 9 }, (_, i) => (
             <div key={i} className="item" style={{ '--position': i + 1 } as React.CSSProperties}>
-              <img src={`/images/d${i + 1}.jpg`} alt="" />
+              <Image
+                src={`/images/d${i + 1}.jpg`}
+                alt={`Gambar ${i + 1}`}
+                width={400} // ganti sesuai kebutuhan
+                height={300} // ganti sesuai kebutuhan
+              />
             </div>
           ))}
         </div>
