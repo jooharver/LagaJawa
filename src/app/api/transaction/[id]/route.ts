@@ -1,40 +1,55 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers'; // <-- PENTING: dari next/headers
 import pool from '../../../lib/db';
 import { verifyToken } from '../../../lib/auth';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+type Transaction = {
+  id: number;
+  no_pemesanan: string;
+  payment_method: string;
+  total: number;
+  payment_status: string;
+  tanggal: string;
+  status: string;
+};
+
+export async function GET(req: Request) {
   try {
-    const headersList =  await headers(); // ✅ Ini asynchronous dari next/headers
-    const authHeader = headersList.get('authorization') || '';
+    // Ambil header Authorization
+    const authHeader = req.headers.get('authorization') || '';
     console.log('Authorization header:', authHeader);
 
-    const token = authHeader && authHeader.startsWith('Bearer ')
-      ? authHeader.slice(7).trim()
-      : '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
     console.log('Extracted token:', token);
 
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized, token missing' }, { status: 401 });
     }
 
+    // Verifikasi token
     const payload = verifyToken(token);
-    console.log('Payload from verifyToken:', payload);
+    console.log('Payload from token:', payload);
 
-    if (!payload) {
+    if (!payload || typeof payload.userId !== 'number') {
       return NextResponse.json({ message: 'Unauthorized, invalid token' }, { status: 401 });
     }
 
     const userId = payload.userId;
-    const transactionId = params.id;
-    console.log('userId:', userId, 'transactionId:', transactionId);
 
-    const [rows]: any = await pool.query(
+    // Ambil transactionId dari URL
+    const url = new URL(req.url);
+    const pathnameSegments = url.pathname.split('/');
+    const transactionId = pathnameSegments[pathnameSegments.length - 1];
+    console.log('Transaction ID from URL:', transactionId);
+
+    // Validasi transactionId, harus angka
+    if (!transactionId || isNaN(Number(transactionId))) {
+      return NextResponse.json({ message: 'Invalid transaction ID' }, { status: 400 });
+    }
+
+    // Query ke database
+    const [rows] = await pool.query(
       `SELECT 
-        id_transactions AS id,
+        id_transaction AS id,
         no_pemesanan,
         payment_method,
         total_amount AS total,
@@ -42,15 +57,17 @@ export async function GET(
         paid_at AS tanggal,
         status
       FROM transactions
-      WHERE id_transactions = ? AND user_id = ?`,
+      WHERE id_transaction = ? AND user_id = ?`,
       [transactionId, userId]
-    );
+    ) as unknown as [Transaction[]];
 
     if (!rows || rows.length === 0) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
+    // Return data transaksi
     return NextResponse.json(rows[0], { status: 200 });
+
   } catch (error) {
     console.error('API transaction error:', error);
     return NextResponse.json({ message: 'Server error' }, { status: 500 });

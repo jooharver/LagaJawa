@@ -2,6 +2,15 @@ import { NextResponse } from 'next/server';
 import pool from '../../../lib/db';
 import bcrypt from 'bcryptjs';
 
+// Tipe untuk user hasil query
+type User = {
+  id: number;
+  email: string;
+  password: string;
+  reset_token: string | null;
+  reset_token_expiry: string | null;
+};
+
 export async function POST(request: Request) {
   try {
     const { token, password } = await request.json();
@@ -15,10 +24,11 @@ export async function POST(request: Request) {
     }
 
     // Cari user dengan token valid yang belum expired
-    const [users]: any = await pool.query(
+    const [rows] = await pool.query(
       'SELECT * FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()',
       [token]
     );
+    const users = rows as User[];
 
     if (users.length === 0) {
       return NextResponse.json(
@@ -27,20 +37,21 @@ export async function POST(request: Request) {
       );
     }
 
+    const user = users[0];
+
     // Hash password baru
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Update password, dan reset token agar tidak bisa dipakai lagi
+    // Update password dan hapus token reset
     await pool.query(
       'UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?',
-      [hashedPassword, users[0].id]
+      [hashedPassword, user.id]
     );
 
     return NextResponse.json(
       { message: 'Password berhasil diubah' },
       { status: 200 }
     );
-
   } catch (error) {
     console.error('Reset Password Error:', error);
     return NextResponse.json(

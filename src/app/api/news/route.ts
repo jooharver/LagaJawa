@@ -1,16 +1,23 @@
-// app/api/news/route.ts
 import { NextResponse } from 'next/server';
-import db from '../../lib/db'; // sesuaikan path
+import db from '../../lib/db';
+import type { FieldPacket } from 'mysql2';
+
+type News = {
+  id_news: number;
+  judul: string;
+  sub_judul: string;
+  tempat: string;
+  tanggal: string;
+  image: string;
+  kategori: string;
+  deskripsi: string;
+};
 
 export async function GET() {
   try {
-    console.log('Fetching news from DB...');
-    const [rows]: any = await db.query('SELECT * FROM news ORDER BY tanggal DESC');
-
-    // Cek apakah rows berbentuk array
-    if (!Array.isArray(rows)) {
-      return NextResponse.json({ error: 'Unexpected DB response format' }, { status: 500 });
-    }
+    const [rows] = await db.query(
+      'SELECT * FROM news ORDER BY tanggal DESC'
+    ) as [News[], FieldPacket[]];
 
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {
