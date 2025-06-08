@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Acara.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 type EventItem = {
   id_news: number;
@@ -20,7 +21,6 @@ export default function AcaraPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Fetch semua data event sekali
   useEffect(() => {
     async function fetchAllEvents() {
       setLoading(true);
@@ -29,9 +29,8 @@ export default function AcaraPage() {
         if (!res.ok) throw new Error("Failed to fetch data");
         const json = await res.json();
 
-         const eventData = json.data.data || [];
-
-        // ✅ Filter agar hanya data dengan kategori 'event' yang masuk
+        const eventData = json.data.data || [];
+        // Pastikan hanya kategori event saja yang masuk
         const filteredEvents = eventData.filter(
           (item: EventItem) => item.kategori === "event"
         );
@@ -50,7 +49,6 @@ export default function AcaraPage() {
     fetchAllEvents();
   }, []);
 
-  // Hitung data event yang ditampilkan di halaman sekarang
   const startIndex = (page - 1) * PAGE_SIZE;
   const paginatedEvents = allEvents.slice(startIndex, startIndex + PAGE_SIZE);
 
@@ -67,26 +65,30 @@ export default function AcaraPage() {
         ) : paginatedEvents.length === 0 ? (
           <p>Tidak ada acara ditemukan.</p>
         ) : (
-            paginatedEvents.map((event) => (
+          paginatedEvents.map((event) => (
             <Link
-                key={event.id_news}
-                href={`/aktivitas/acara/${event.id_news}`}
-                className={styles.eventItem} // pindahkan ke Link
+              key={event.id_news}
+              href={`/aktivitas/acara/${event.id_news}`}
+              className={styles.eventItem}
             >
-                <div className={styles.left}>
-                <img
-                    src={`http://localhost:8000/storage/${event.image}`}
-                    alt={event.judul}
+              <div className={styles.left}>
+                <Image
+                  src={`http://localhost:8000/storage/${event.image}`}
+                  alt={event.judul}
+                  width={200}
+                  height={200}
+                  style={{ objectFit: "cover", borderRadius: "8px" }}
+                  priority={false} // opsional, kalau ingin prefetch image atur true
                 />
-                </div>
-                <div className={styles.right}>
+              </div>
+              <div className={styles.right}>
                 <h3>{event.judul}</h3>
                 <p className={styles.date}>
-                    {new Date(event.tanggal).toLocaleDateString()}
+                  {new Date(event.tanggal).toLocaleDateString()}
                 </p>
-                </div>
+              </div>
             </Link>
-            ))
+          ))
         )}
       </section>
 
