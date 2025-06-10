@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './Komunitas.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Komunitas {
   id: number;
@@ -73,12 +74,13 @@ export default function KomunitasPage() {
               if (e.key === 'Enter') handleDetail(item.id);
             }}
           >
-            <img
-                src={`http://localhost:8000/storage/${item.image_logo}`}
-                alt={item.title}
-                width={160}
-                height={160}
-                className={styles.image}
+            <Image
+              src={`http://localhost:8000/storage/${item.image_logo}`}
+              alt={item.title}
+              width={150}
+              height={150}
+              className={styles.image}
+              style={{ borderRadius: "8px" }}
             />
             <h3 className={styles.cardTitle}>{item.title}</h3>
           </div>

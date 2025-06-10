@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styles from './KomunitasDetail.module.css';
+import Image from 'next/image';
 
 interface Komunitas {
   id: number;
@@ -36,15 +37,21 @@ export default function KomunitasDetailPage() {
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.bannerSection}>
-            <img
+            <Image
               src={`http://localhost:8000/storage/${komunitas.image_banner}`}
               alt="Banner"
+              width={800}
+              height={250}
               className={styles.banner}
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
-            <img
+            <Image
               src={`http://localhost:8000/storage/${komunitas.image_logo}`}
               alt="Logo"
+              width={120}
+              height={120}
               className={styles.logo}
+              style={{ objectFit: 'contain', borderRadius: '50%' }}
             />
           </div>
 
@@ -69,10 +76,13 @@ export default function KomunitasDetailPage() {
 
           <div className={styles.gallery}>
             <h3>Galeri</h3>
-            <img
+            <Image
               src={`http://localhost:8000/storage/${komunitas.image}`}
               alt="Galeri"
+              width={600}
+              height={400}
               className={styles.galleryImage}
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
           </div>
         </div>

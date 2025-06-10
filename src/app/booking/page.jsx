@@ -239,7 +239,10 @@ export default function BookingPage() {
       </div>
 
       {loading ? (
-        <p style={{ textAlign: 'center' }}>Memuat jadwal booking...</p>
+        <div className={styles.loaderContainer}>
+          <div className={styles.spinner}></div>
+          <p>Memuat jadwal booking...</p>
+        </div>
       ) : (
         <div className={styles.table}>
           <div className={styles.headerRow}>
