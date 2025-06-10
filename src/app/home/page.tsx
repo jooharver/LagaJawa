@@ -44,7 +44,6 @@ useEffect(() => {
           src="/images/lapangan7.jpg"
           alt="Background"
           fill
-          priority
           className={styles.heroBackground}
         />
         <div className={styles.heroOverlay}>

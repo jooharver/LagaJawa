@@ -10,9 +10,10 @@
   
   /* Hero Container */
   .heroContainer {
-    margin-top: 70px;
+    margin-top: -6rem;
+    z-index: 0;
     position: relative;
-    min-height: 100vh;
+    max-height: 800px;
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -43,16 +44,17 @@
 
   .heroTextContainer {
     text-align: center;
+    margin-top: 8rem;
   }
   
   .judulHero {
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 500;
     text-shadow: 0 0 3px;
     position: relative;
     text-align: center;
-    z-index: -1;
+    z-index: 1;
     margin: 0;
     opacity: 0;
     transform: translateY(-40px);
@@ -208,14 +210,24 @@
   
   /* Mobile Styles */
   @media screen and (max-width: 768px) {
+    .heroContainer {
+      margin-top: -4rem;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     .judulHero {
-      margin-top: 20%;
-      font-size: 2rem;
+      margin-top: 1rem;
+      font-size: 1.2rem;
     }
     
     .deskripsiHero {
-      font-size: 1rem;
+      font-size: 0.8rem;
+      align-self: center;
     }
+    
     
     .heroContainer {
       background-size: cover;
@@ -224,25 +236,25 @@
     .product {
       width: 250px;
       height: 250px;
-      bottom: 120px;
+      bottom: -30px;
     }
   
     .ball {
-      width: 80px;
-      bottom: 122px;
+      width: 70px;
+      bottom: 165px;
     }
   
     .rock img:nth-child(1) {
-      width: 150px;
+      width: 120px;
       height: auto;
-      bottom: 200px;
+      bottom: 100px;
     }
   
     .rock img:nth-child(2),
     .rock img:nth-child(3) {
-      width: 180px;
+      width: 160px;
       height: auto;
-      bottom: 200px;
+      bottom: 100px;
     }
   
     .product:hover ~ .rock img:nth-child(2) {
@@ -254,17 +266,18 @@
     }
   
     .bookNow {
-      font-size: 1rem;
+      font-size: 0.8rem;
       padding: 10px 20px;
-      top: 85%;
+      top: 60%;
     }
   
     .product:hover .bookNow {
-      transform: translate(-50%, -50%) translateY(85px);
+      transform: translate(-50%, -50%) translateY(95px);
       background-color: #ffffff8e;
       color: #033d0d;
-      border: 3px solid #fff;
+      border: 2px solid #fff;
     }
+    
   }
   
   /* Animation Classes */
@@ -419,7 +432,8 @@
   }
 
   .featureCard {
-    width: 90%;
+    width: 80%;
+    height:300px;
   }
 }
 
