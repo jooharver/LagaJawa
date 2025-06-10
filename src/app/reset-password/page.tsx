@@ -26,48 +26,52 @@ export default function ResetPasswordPage() {
   }, [token]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    if (!password || !confirmPassword) {
-      setError('Password dan konfirmasi password wajib diisi');
-      return;
-    }
+  if (!password || !confirmPassword) {
+    setError('Password dan konfirmasi password wajib diisi');
+    return;
+  }
 
-    if (password !== confirmPassword) {
-      setError('Password dan konfirmasi password tidak sama');
-      return;
-    }
+  if (password.length < 8) {
+    setError('Password harus memiliki minimal 8 karakter');
+    return;
+  }
 
-    if (!token) {
-      setError('Token reset password tidak ditemukan atau tidak valid.');
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError('Password dan konfirmasi password tidak sama');
+    return;
+  }
 
-    setIsLoading(true);
+  if (!token) {
+    setError('Token reset password tidak ditemukan atau tidak valid.');
+    return;
+  }
 
-    try {
-      const res = await fetch('/api/auth/reset-password', {
+  setIsLoading(true);
+
+  try {
+    const res = await fetch('/api/auth/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, password }),
     });
 
+    const data: { message?: string } = await res.json();
 
-      const data: { message?: string } = await res.json();
-
-      if (!res.ok) {
-        setError(data.message ?? 'Gagal mereset password');
-      } else {
-        setSuccess('Password berhasil diubah. Anda akan diarahkan ke halaman login...');
-        setTimeout(() => router.push('/login'), 3000);
-      }
-    } catch  {
-      setError('Terjadi kesalahan saat mengirim permintaan');
-    } finally {
-      setIsLoading(false);
+    if (!res.ok) {
+      setError(data.message ?? 'Gagal mereset password');
+    } else {
+      setSuccess('Password berhasil diubah. Anda akan diarahkan ke halaman login...');
+      setTimeout(() => router.push('/login'), 3000);
     }
+  } catch {
+    setError('Terjadi kesalahan saat mengirim permintaan');
+  } finally {
+    setIsLoading(false);
+  }
   };
 
   return (
