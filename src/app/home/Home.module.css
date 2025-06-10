@@ -1,5 +1,6 @@
 /* Base styles */
 .homepage {
+    overflow-x: hidden;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -210,6 +211,10 @@
   
   /* Mobile Styles */
   @media screen and (max-width: 768px) {
+    .homepage{
+        overflow-x: hidden;
+        width: 100%;
+    }
     .heroContainer {
       margin-top: -4rem;
       height: 100vh;
