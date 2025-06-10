@@ -36,7 +36,11 @@ const SettingPage = () => {
 
       if (res.ok) {
         const data: UserProfile = await res.json();
-        setUserData(data);
+        setUserData({
+          name: data.name,
+          email: data.email,
+          phone: data.phone ?? '',
+        });
       } else {
         console.error('Gagal mengambil data profil');
       }
@@ -50,7 +54,7 @@ const SettingPage = () => {
     setTimeout(() => {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
-      setUserData(null);
+      setUserData({ name: '', email: '', phone: '' });
       setIsLoggingOut(false);
       router.push('/login');
     }, 1000);

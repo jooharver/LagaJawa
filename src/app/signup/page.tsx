@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 type FormData = {
   name: string;
@@ -67,7 +66,8 @@ export default function SignupForm() {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
+ // ...existing code...
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   if (!validate()) {
@@ -77,7 +77,6 @@ export default function SignupForm() {
   setIsSubmitting(true);
 
   try {
-    console.log('Form Data:', formData);
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: {
@@ -87,44 +86,28 @@ export default function SignupForm() {
     });
 
     const data = await response.json();
-    console.log('Server response:', data);
 
     if (!response.ok) {
-      toast.error(data.message || 'Pendaftaran gagal');
+      setErrors((prev) => ({ ...prev, api: data.message || 'Pendaftaran gagal' }));
       setIsSubmitting(false);
-      return; // stop here, no success toast
+      return;
     }
 
-    toast.success('Pendaftaran berhasil! Mengalihkan ke halaman login...', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
+    // Optionally, show a simple alert or just redirect
+    // alert('Pendaftaran berhasil! Mengalihkan ke halaman login...');
     setTimeout(() => {
       router.push('/login');
     }, 2000);
-  } catch (error) {
-    toast.error(
-      error instanceof Error ? error.message : 'Terjadi kesalahan',
-      {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }
-    );
+  } catch (err) {
+    setErrors((prev) => ({
+      ...prev,
+      api: err instanceof Error ? err.message : 'Terjadi kesalahan',
+    }));
   } finally {
     setIsSubmitting(false);
   }
 };
+// ...existing code...
 
   return (
     <div className={styles.container}>

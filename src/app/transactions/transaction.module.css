@@ -1,7 +1,7 @@
 .container {
   padding: 2rem;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 5rem auto;
   
 }
 
@@ -67,7 +67,7 @@
 }
 
 .detailButton {
-  background-color: #2563eb;
+  background-color: #1ca977;
   color: white;
   border: none;
   padding: 0.6rem 1rem;
@@ -77,7 +77,7 @@
 }
 
 .detailButton:hover {
-  background-color: #1e40af;
+  background-color: #16a34a;
 }
 
 .status {

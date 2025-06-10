@@ -1,27 +1,55 @@
 .receipt {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  max-width: 600px;
+  margin: 10rem auto;
+  padding: 2rem;
   background-color: #fff;
-  font-family: 'Courier New', Courier, monospace;
-  border: 1px dashed #ccc;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: poppins, sans-serif;
 }
 
-.receipt h1 {
-  font-size: 1.2rem;
-  text-align: center;
+.bookingList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.bookingItem {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   margin-bottom: 1rem;
-  border-bottom: 1px dashed #aaa;
-  padding-bottom: 0.5rem;
+  background-color: #f9f9f9;
 }
 
-.receipt p {
-  margin: 0.5rem 0;
+.textCenter {
+  text-align: center;
 }
 
-.receipt strong {
+.subHeading {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.status {
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
   display: inline-block;
-  width: 150px;
+  text-transform: capitalize;
+}
+
+.status.confirmed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.failed {
+  background-color: #f8d7da;
+  color: #721c24;
 }
