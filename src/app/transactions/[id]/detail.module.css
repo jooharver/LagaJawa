@@ -39,7 +39,7 @@
   text-transform: capitalize;
 }
 
-.status.paid {
+.status.confirmed {
   background-color: #d4edda;
   color: #155724;
 }
