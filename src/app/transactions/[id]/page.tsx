@@ -56,9 +56,9 @@ return (
     <p><strong>Metode Pembayaran:</strong> {booking.payment_method}</p>
     <p>
   <strong>Dibayar Pada:</strong>{' '}
-  {booking.paid_at
+  {booking.paid_at && booking.paid_at !== 'null'
     ? new Date(booking.paid_at).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
-    : 'Belum dibayar'}
+    : '-'}
 </p>
 
     <p><strong>Total:</strong> Rp {booking.total.toLocaleString('id-ID')}</p>

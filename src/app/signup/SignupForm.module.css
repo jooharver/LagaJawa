@@ -1,7 +1,7 @@
 .container {
   margin-top: 100px;
   display: flex;
-  min-height: 100vh;
+  max-height: 100vh;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -100,13 +100,14 @@
 .submitButton {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, #416a48 0%, #3182ce 100%);
+  background: #1ca977;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
   margin-top: 0.5rem;
   display: flex;
@@ -116,7 +117,7 @@
 }
 
 .submitButton:hover {
-  background: linear-gradient(135deg, #3182ce 0%, #416a48 100%);
+  background: #017a10;
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
 }
