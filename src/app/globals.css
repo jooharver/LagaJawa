@@ -67,6 +67,9 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  .body{
+    overflow-x: hidden;
+  }
   .judul {
     margin-top: 20%;
     font-size: 2rem;
