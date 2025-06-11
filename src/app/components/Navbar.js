@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 
 const menuItems = [
-  { label: 'Home', href: '/', icon: <Home size={24} /> },
+  { label: 'Home', href: '/home', icon: <Home size={24} /> },
   { label: 'Activities', href: '/aktivitas', icon: <ClipboardList size={24} /> },
   { label: 'Booking', href: '/booking', icon: <CalendarCheck size={24} /> },
   { label: 'News', href: '/news', icon: <Newspaper size={24} /> },

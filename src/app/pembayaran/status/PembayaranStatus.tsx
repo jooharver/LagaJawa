@@ -20,7 +20,7 @@ export default function StatusForm() {
 
     const fetchTransaction = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/transactions/by-order/${orderId}`);
+        const res = await fetch(`https://portal.lagajawa.site/api/transactions/by-order/${orderId}`);
         const json = await res.json();
 
         if (!json.success) {

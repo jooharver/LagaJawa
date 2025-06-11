@@ -6,9 +6,18 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '8000',
-        pathname: '/storage/**', // pastikan sesuai
+        pathname: '/storage/**',
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: true,
+      },
+    ]
   },
 };
 

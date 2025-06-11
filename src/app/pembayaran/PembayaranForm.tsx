@@ -79,7 +79,7 @@ export default function PembayaranPage() {
         payment_method: paymentMethod,
       };
 
-      const transactionRes = await fetch('http://localhost:8000/api/transactions', {
+      const transactionRes = await fetch('https://portal.lagajawa.site/api/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transactionPayload),
@@ -120,7 +120,7 @@ export default function PembayaranPage() {
 
         console.log(`Mengirim booking untuk court ${courtId}:`, bookingPayload);
 
-        const res = await fetch('http://localhost:8000/api/bookings', {
+        const res = await fetch('https://portal.lagajawa.site/api/bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bookingPayload),
@@ -142,7 +142,7 @@ export default function PembayaranPage() {
       const bookingResults = await Promise.all(bookingRequests);
       console.log('Hasil booking:', bookingResults);
 
-      const snapResponse = await fetch(`http://localhost:8000/api/transactions/${transactionId}/generate-snap`);
+      const snapResponse = await fetch(`https://portal.lagajawa.site/api/transactions/${transactionId}/generate-snap`);
       const snapData = await snapResponse.json();
       if (!snapData.success) throw new Error(snapData.message);
 
@@ -160,7 +160,7 @@ export default function PembayaranPage() {
 
       if (transactionId) {
         try {
-          await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
+          await fetch(`https://portal.lagajawa.site/api/transactions/${transactionId}`, {
             method: 'DELETE',
           });
           console.log(`Transaksi ${transactionId} dibatalkan karena gagal booking.`);
@@ -219,7 +219,6 @@ export default function PembayaranPage() {
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
             <option value="transfer">Transfer Bank</option>
-            <option value="qris">QRIS</option>
             <option value="cod">Bayar di Tempat (COD)</option>
           </select>
 

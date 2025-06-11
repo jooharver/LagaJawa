@@ -115,7 +115,7 @@ export default function BookingPage() {
   }, [totalPrice]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/courts')
+    fetch('https://portal.lagajawa.site/api/courts')
       .then(res => res.json())
       .then(result => {
         console.log('Response dari API courts:', result);

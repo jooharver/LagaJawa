@@ -1,5 +1,6 @@
 /* Base styles */
 .homepage {
+    overflow-x: hidden;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -10,9 +11,10 @@
   
   /* Hero Container */
   .heroContainer {
-    margin-top: 70px;
+    margin-top: -6rem;
+    z-index: 0;
     position: relative;
-    min-height: 100vh;
+    max-height: 800px;
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -43,16 +45,17 @@
 
   .heroTextContainer {
     text-align: center;
+    margin-top: 8rem;
   }
   
   .judulHero {
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 500;
     text-shadow: 0 0 3px;
     position: relative;
     text-align: center;
-    z-index: -1;
+    z-index: 1;
     margin: 0;
     opacity: 0;
     transform: translateY(-40px);
@@ -70,7 +73,18 @@
     transform: translateY(40px);
     transition: all 0.6s ease-out;
   }
-  
+
+  .mobileBreak {
+  display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobileBreak {
+      display: inline;
+    }
+  }
+
+    
   /* Banner Styles */
   .banner {
     width: 100%;
@@ -208,14 +222,29 @@
   
   /* Mobile Styles */
   @media screen and (max-width: 768px) {
+    .homepage{
+        overflow-x: hidden;
+        width: 100%;
+        margin-bottom: 70px;
+    }
+    .heroContainer {
+      margin-top: -4rem;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     .judulHero {
-      margin-top: 20%;
-      font-size: 2rem;
+      margin-top: 1rem;
+      font-size: 1.2rem;
     }
     
     .deskripsiHero {
-      font-size: 1rem;
+      font-size: 0.8rem;
+      align-self: center;
     }
+    
     
     .heroContainer {
       background-size: cover;
@@ -224,25 +253,25 @@
     .product {
       width: 250px;
       height: 250px;
-      bottom: 120px;
+      bottom: -30px;
     }
   
     .ball {
-      width: 80px;
-      bottom: 122px;
+      width: 70px;
+      bottom: 165px;
     }
   
     .rock img:nth-child(1) {
-      width: 150px;
+      width: 120px;
       height: auto;
-      bottom: 200px;
+      bottom: 100px;
     }
   
     .rock img:nth-child(2),
     .rock img:nth-child(3) {
-      width: 180px;
+      width: 160px;
       height: auto;
-      bottom: 200px;
+      bottom: 100px;
     }
   
     .product:hover ~ .rock img:nth-child(2) {
@@ -254,17 +283,18 @@
     }
   
     .bookNow {
-      font-size: 1rem;
+      font-size: 0.8rem;
       padding: 10px 20px;
-      top: 85%;
+      top: 60%;
     }
   
     .product:hover .bookNow {
-      transform: translate(-50%, -50%) translateY(85px);
+      transform: translate(-50%, -50%) translateY(95px);
       background-color: #ffffff8e;
       color: #033d0d;
-      border: 3px solid #fff;
+      border: 2px solid #fff;
     }
+    
   }
   
   /* Animation Classes */
@@ -306,6 +336,7 @@
     transform: translateX(60px);
     transition: all 1s ease-out;
   }
+
 .show {
     opacity: 1;
     transform: translateY(0);
@@ -419,7 +450,8 @@
   }
 
   .featureCard {
-    width: 90%;
+    width: 80%;
+    height:300px;
   }
 }
 
@@ -700,155 +732,211 @@
 }
 
 /* SECTION LOKASI */
-
-.lokasiSection {
-  padding: 4rem 2rem;
-  background-color: black;
+.section {
+  background-image: url('/images/card-texture2.jpg'); /* hijau */
+  padding: 3rem 1rem;
+  text-align: center;
   color: white;
-  text-align: center;
 }
 
-.judulLokasi {
-  color: rgb(255, 255, 255);
-  font-size: 2rem;
-  font-weight: 700;
-  position: relative;
-  text-align: center;
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: all 0.6s ease-out;
-}
 
-.deskripsiLokasi {
-    padding-bottom: 2rem;
-    z-index: 0;
-    width: 80%;
-    margin: 0 auto;
-    font-size: 1rem;
-    color: #ebebeb;
-    margin-top: -1.5rem;
-    position: relative;
-    text-align: center;
-    opacity: 0;
-    transform: translateX(60px);
-    transition: all 1s ease-out;
-  }
-
-.deskripsiAlamat {
-  font-size: 1.25rem;
-  max-width: 800px;
-  margin: 0 auto 3rem auto;
-  line-height: 1.6;
-}
-
-.contentLokasi {
+.content {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border-radius: 8px;
   gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.mapFrame{
-  background: white;
-  border-radius: 2rem;
-  padding: 1rem;
-  height: 500px;
-  width: 500px;
-  max-width: 500px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.detailAlamat {
-  background: white;
-  border-radius: 2rem;
-  padding: 1rem;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.mapFrame iframe {
-  width: 100%;
-  height: 400px;
-  border: 0;
-  border-radius: 1.5rem;
-}
-
-.detailAlamat {
+.infoBox {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.show {
-    opacity: 1;
-    transform: translateY(0);
- }
-
-.fotoContainer {
+.photoBox {
+  background-image: url('/images/gor.jpg');
+  background-size: contain; /* Gambar tidak di-zoom, akan fit sesuai ukuran */
+  background-repeat: no-repeat; /* Hindari pengulangan */
+  background-position: center; /* Gambar selalu di tengah */
+  width: 100%;
+  max-width: 100%; 
+  height: 300px;
   position: relative;
-  width: 100%;
-  border-radius: 1.5rem;
-  overflow: hidden;
-  background-color: #76e6e6;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* menjaga proporsi tanpa hardcoded height */
 }
 
-.fotoGedung {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.logoOverlay {
+.logo {
+  background-image: url('/images/logo.png');
+  background-size: contain; /* Gambar tidak di-zoom, akan fit sesuai ukuran */
+  background-repeat: no-repeat; /* Hindari pengulangan */
+  background-position: center; /* Gambar selalu di tengah */
+  height: 20px;
+  width: 110px;
+  font-weight: bold;
+  border-radius: 4px;
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background-color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.5rem;
+  top: 1rem;
+  left: 4.5rem;
 }
 
-.rincianAlamat {
-  margin: 1rem 0;
-  font-size: 1.1rem;
+.judulAlamat {
+  color: rgb(255, 255, 255);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  bottom: -2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all 0.6s ease-out;
+}
+
+.deskripsiAlamat{
+  font-weight: bold;
+  color: #d4d4d4;
+  width: 80%;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 0.6s ease-out;
+}
+
+.photoLabel {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 3rem;
+}
+
+.address {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
   color: black;
   text-align: center;
 }
 
-.buttonMap {
-  background-color: #00c853;
-  color: black;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 1rem;
+.mapButton {
+  background-color: #05924e;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
   text-decoration: none;
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  font-weight: 600;
+  transition: transform 0.2s ease;
 }
 
-.buttonMap:hover {
-  background-color: #00e676;
+.mapButton:hover {
   transform: scale(1.05);
+  background-color: #15803d;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .contentLokasi {
-    flex-direction: column;
-    align-items: center;
+.mapBox {
+  flex: 1;
+  background-color: #ffffff; /* light gray */
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapText {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+}
+  .show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .mapFrame,
-  .detailAlamat {
+@media (min-width: 768px) {
+  .content {
+    flex-direction: row;
+  }
+
+  .infoBox, .mapBox {
+    height: 100%;
+  }
+
+  .photoBox {
+    height: 250px;
+  }
+}
+
+
+/* Tambahan untuk padding dan alignment mobile */
+@media (max-width: 767px) {
+  .content {
+    padding: 1rem;
+  }
+
+  .infoBox {
     width: 100%;
-    max-width: 100%;
   }
 
-  .judulLokasi {
-    font-size: 2rem;
+  .mapBox{
+    width: 100%;
+  }
+
+  .logo {
+    top: 4rem;
+    left: 0.5rem;
+  }
+
+  .content {
+    flex-direction: column-reverse;
+    width: 90%; /* ini membalik urutan: mapBox di atas, infoBox di bawah */
+  }
+
+  .address {
+    font-size: 1rem;
+    margin-top: -3.5rem;
+  }
+
+  .mapButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .judulAlamat {
+    font-size: 1.6rem;
   }
 
   .deskripsiAlamat {
     font-size: 1rem;
+    width: 100%;
+    padding: 0 1rem;
+  }
+   .photoBox{
+    top: -2rem;
+    width: 400px;
+    height: 300px;
+   }
+
+  .mapButton {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    width: 80px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .infoBox{
+    padding-bottom: 2rem;
   }
 }
-
