@@ -1,6 +1,9 @@
+import React, { Suspense } from 'react'; // Import React dan Suspense
 import styles from './Aktivitas.module.css';
-import Link from 'next/link';
 import Image from 'next/image';
+
+const LazyKomunitasSection = React.lazy(() => import('./KomunitasSection'));
+const LazyAcaraSection = React.lazy(() => import('./AcaraSection'));
 
 interface Komunitas {
   id: number;
@@ -77,8 +80,10 @@ const getBeritaEvent = async (): Promise<Berita[]> => {
 };
 
 export default async function AktivitasPage() {
-  const komunitas = await getKomunitas();
-  const acara = await getBeritaEvent();
+  const [komunitas, acara] = await Promise.all([
+    getKomunitas(),
+    getBeritaEvent(),
+  ]);
 
   return (
     <>
@@ -94,60 +99,14 @@ export default async function AktivitasPage() {
 
       <main className={styles.container}>
         {/* Komunitas Section */}
-        <section className={styles.section}>
-          <h2>Komunitas</h2>
-          <p>Berbagai komunitas futsal aktif yang dapat kamu ikuti kegiatannya.</p>
-          <div className={styles.itemGrid}>
-            {komunitas.slice(0, 5).map((item) => (
-              <Link
-                key={item.id}
-                href={`/aktivitas/komunitas/${item.id}`}
-                className={styles.aktivitasCard}
-              >
-                <Image
-                  src={`http://localhost:8000/storage/${item.image_logo}`}
-                  alt={item.title}
-                  width={100} // sesuaikan ukuran sesuai kebutuhan styling
-                  height={100}
-                  className={styles.cardImage}
-                  priority={false}
-                />
-                <p className={styles.cardTitle}>{item.title}</p>
-              </Link>
-            ))}
-          </div>
-          <Link href="/aktivitas/komunitas" className={styles.moreButton}>
-            Selengkapnya
-          </Link>
-        </section>
+        <Suspense fallback={<div>Memuat komunitas...</div>}>
+          <LazyKomunitasSection komunitas={komunitas} />
+        </Suspense>
 
         {/* Acara Section */}
-        <section className={styles.section}>
-          <h2>Acara Terbaru</h2>
-          <p>Ikuti acara-acara seru yang akan datang!</p>
-          <div className={styles.itemGrid}>
-            {acara.slice(0, 5).map((item) => (
-              <Link
-                key={item.id_news}
-                href={`/aktivitas/acara/${item.id_news}`}
-                className={styles.aktivitasCard}
-              >
-                <Image
-                  src={`http://localhost:8000/storage/${item.image}`}
-                  alt={item.judul}
-                  width={100} // sesuaikan ukuran sesuai styling
-                  height={100}
-                  className={styles.cardImage}
-                  priority={false}
-                />
-                <p className={styles.cardTitle}>{item.judul}</p>
-              </Link>
-            ))}
-          </div>
-          <Link href="/aktivitas/acara" className={styles.moreButton}>
-            Selengkapnya
-          </Link>
-        </section>
+        <Suspense fallback={<div>Memuat acara...</div>}>
+          <LazyAcaraSection acara={acara} />
+        </Suspense>
       </main>
     </>
   );
