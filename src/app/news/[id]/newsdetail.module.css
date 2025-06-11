@@ -1,9 +1,9 @@
 .containerWrapper {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  margin: 60 auto 0 auto;
   padding: 2rem;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   font-family: 'Georgia', 'Times New Roman', Times, serif;
 }
 
@@ -65,4 +65,18 @@
   column-count: 2;
   column-gap: 2rem;
   column-rule: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+ .containerWrapper {
+  margin: 0 auto 60 auto;
+ }
+ .container {
+  margin: 10 auto;
+  padding: 1.5rem;
+ }
+ .title {
+  font-size: 1.8rem;
+ }
+  
 }
