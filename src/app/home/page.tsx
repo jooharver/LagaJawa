@@ -52,8 +52,13 @@ useEffect(() => {
               <h1>LAGA JAWA FUTSAL</h1>
             </div>
             <div className={styles.deskripsiHero}>
-              <h3>Pesan Lapangan Futsal dengan Mudah dan Cepat</h3>
+              <h3>
+                Pesan Lapangan Futsal dengan
+                <br className={styles.mobileBreak} />
+                Mudah dan Cepat
+              </h3>
             </div>
+
           </div>
         </div>
 

@@ -73,7 +73,18 @@
     transform: translateY(40px);
     transition: all 0.6s ease-out;
   }
-  
+
+  .mobileBreak {
+  display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobileBreak {
+      display: inline;
+    }
+  }
+
+    
   /* Banner Styles */
   .banner {
     width: 100%;
