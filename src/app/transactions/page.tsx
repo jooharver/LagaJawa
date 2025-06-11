@@ -32,33 +32,29 @@ export default function Transactions() {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token tidak ditemukan");
-        setIsLoading(false);
-        return;
-      }
+  const token = localStorage.getItem('token');
 
-      try {
-        setIsLoading(true);
-        const res = await axios.get("/api/riwayat-transaksi", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            ...(selectedDate ? { tanggal: selectedDate } : {}),
-            ...(paymentStatusFilter ? { payment_status: paymentStatusFilter } : {}),
-          },
-        });
+  try {
+    const res = await fetch('https://portal.lagajawa.site/api/transactions', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
 
-        setTransactions(res.data.data as Transaction[]);
-      } catch (err) {
-        console.error("Gagal mengambil data transaksi:", err);
-        setTransactions([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!res.ok) {
+      const errorText = await res.text(); // ambil isi response error
+      console.error('Gagal fetch:', res.status, errorText);
+      return;
+    }
+
+    const result = await res.json();
+    console.log('Transaksi:', result);
+  } catch (err) {
+    console.error('Fetch error:', err);
+  }
+};
+
 
     fetchTransactions();
   }, [selectedDate, paymentStatusFilter]);
