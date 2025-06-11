@@ -15,9 +15,8 @@ type Transaction = {
 
 export default function Transactions() {
   const router = useRouter();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [originalTransactions, setOriginalTransactions] = useState<Transaction[]>([]);
   const [paymentStatusFilter, setPaymentStatusFilter] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const mapPaymentStatusLabel = (status: string) => {
@@ -30,41 +29,45 @@ export default function Transactions() {
   };
 
   useEffect(() => {
-  const fetchTransactions = async () => {
-    const token = localStorage.getItem('token');
-    setIsLoading(true);
+    const fetchTransactions = async () => {
+      const token = localStorage.getItem('token');
+      setIsLoading(true);
 
-    try {
-      const res = await fetch('https://portal.lagajawa.site/api/transactions', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      });
+      try {
+        const res = await fetch('https://portal.lagajawa.site/api/transactions', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        });
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error('Gagal fetch:', res.status, errorText);
-        setTransactions([]);
-        return;
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Gagal fetch:', res.status, errorText);
+          setOriginalTransactions([]);
+          return;
+        }
+
+        const result = await res.json();
+        console.log('Hasil transaksi:', result);
+
+        const data = Array.isArray(result.data?.data) ? result.data.data : [];
+        setOriginalTransactions(data);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setOriginalTransactions([]);
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      const result = await res.json();
-      console.log('Hasil transaksi:', result);
+    fetchTransactions();
+  }, []);
 
-      const data = Array.isArray(result.data?.data) ? result.data.data : [];
-      setTransactions(data);
-    } catch (err) {
-      console.error('Fetch error:', err);
-      setTransactions([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchTransactions();
-}, [selectedDate, paymentStatusFilter]);
-
+  // Filter hanya berdasarkan status pembayaran
+  const filteredTransactions = originalTransactions.filter((trx) =>
+    paymentStatusFilter ? trx.payment_status === paymentStatusFilter : true
+  );
 
   return (
     <div className={styles.container}>
@@ -81,21 +84,15 @@ export default function Transactions() {
           <option value="paid">Sudah Dibayar</option>
           <option value="failed">Gagal Bayar</option>
         </select>
-        <input
-          type="date"
-          className={styles.input}
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
       </div>
 
       {isLoading ? (
         <p className={styles.loading}>Loading...</p>
-      ) : transactions.length === 0 ? (
-        <p className={styles.emptyMessage}>Kamu belum memiliki riwayat transaksi.</p>
+      ) : filteredTransactions.length === 0 ? (
+        <p className={styles.emptyMessage}>Tidak ada transaksi dengan status yang dipilih.</p>
       ) : (
         <div className={styles.cardContainer}>
-          {transactions.map((trx) => (
+          {filteredTransactions.map((trx) => (
             <div key={trx.id_transaction} className={styles.card}>
               <div className={styles.cardHeader}>
                 <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
