@@ -1,6 +1,7 @@
 /* Aktivitas.module.css */
 
 .container {
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -11,6 +12,7 @@
 }
 
 .heroSection {
+  overflow-x: hidden;
   display: flex;
   height: 100vh;
   width: 99vw;

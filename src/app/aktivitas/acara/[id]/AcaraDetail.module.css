@@ -1,5 +1,6 @@
 .container {
   max-width: 800px;
+  overflow-x: hidden;
   margin: 80px auto 0; /* memberi jarak dari navbar atas */
   padding: 24px;
   font-family: sans-serif;

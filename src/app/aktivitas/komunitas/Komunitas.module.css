@@ -1,4 +1,5 @@
 .container {
+  overflow-x: hidden;
   max-width: 900px;
   margin: 0 auto;
   padding: 80px 20px 0 20px; /* Tambahkan padding horizontal */
