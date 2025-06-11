@@ -129,11 +129,16 @@
   margin-top: 10px;
   display: inline-block;
   padding: 10px 20px;
-  background-color: #25d366;
+  background-color: #1ca977;
   color: white;
   text-decoration: none;
   border-radius: 6px;
   font-weight: bold;
+}
+
+.joinButton:hover{
+  background-color: #0f6600;
+  transform: translateY(-3px);
 }
 
 .deskripsi {
