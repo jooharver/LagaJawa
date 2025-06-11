@@ -30,49 +30,41 @@ export default function Transactions() {
   };
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      setIsLoading(true);
-      const token = localStorage.getItem('token');
+  const fetchTransactions = async () => {
+    const token = localStorage.getItem('token');
+    setIsLoading(true);
 
-      try {
-        const res = await fetch('https://portal.lagajawa.site/api/transactions', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
+    try {
+      const res = await fetch('https://portal.lagajawa.site/api/transactions', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
 
-        if (!res.ok) {
-          const errorText = await res.text();
-          console.error('Gagal fetch:', res.status, errorText);
-          setIsLoading(false);
-          return;
-        }
-
-        const result = await res.json();
-        console.log('Transaksi:', result);
-
-        // Filter transaksi sesuai status & tanggal (opsional)
-        let filtered = result.data;
-        if (paymentStatusFilter) {
-          filtered = filtered.filter((trx: Transaction) => trx.payment_status === paymentStatusFilter);
-        }
-        if (selectedDate) {
-          filtered = filtered.filter((trx: Transaction) =>
-            trx.created_at.startsWith(selectedDate)
-          );
-        }
-
-        setTransactions(filtered);
-      } catch (err) {
-        console.error('Fetch error:', err);
-      } finally {
-        setIsLoading(false);
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Gagal fetch:', res.status, errorText);
+        setTransactions([]);
+        return;
       }
-    };
 
-    fetchTransactions();
-  }, [selectedDate, paymentStatusFilter]);
+      const result = await res.json();
+      console.log('Hasil transaksi:', result);
+
+      const data = Array.isArray(result.data?.data) ? result.data.data : [];
+      setTransactions(data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setTransactions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchTransactions();
+}, [selectedDate, paymentStatusFilter]);
+
 
   return (
     <div className={styles.container}>
