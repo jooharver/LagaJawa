@@ -8,6 +8,7 @@ type FormData = {
   name: string;
   email: string;
   phone: string;
+  address: string;
   password: string;
   confirmPassword: string;
 };
@@ -19,6 +20,7 @@ export default function SignupForm() {
     name: '',
     email: '',
     phone: '',
+    address: '',
     password: '',
     confirmPassword: '',
   });
@@ -45,6 +47,8 @@ export default function SignupForm() {
     if (!formData.phone.trim()) newErrors.phone = 'Nomor telepon wajib diisi.';
     else if (!/^\d{10,15}$/.test(formData.phone)) newErrors.phone = 'Format nomor tidak valid.';
 
+    if (!formData.address.trim()) newErrors.address = 'Alamat wajib diisi.';
+
     if (!formData.email.trim()) newErrors.email = 'Email wajib diisi.';
     else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Format email tidak valid.';
 
@@ -64,11 +68,23 @@ export default function SignupForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('http://localhost:8000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          password: formData.password, // ✅ cukup password saja
+        }),
+
       });
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server mengembalikan respon yang tidak valid (bukan JSON)');
+      }
 
       const data = await response.json();
 
@@ -93,32 +109,13 @@ export default function SignupForm() {
 
   const EyeIcon = ({ visible }: { visible: boolean }) => (
     visible ? (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        width={20}
-        height={20}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round"
-          d="M2.25 12s3.75-6.75 9.75-6.75 9.75 6.75 9.75 6.75-3.75 6.75-9.75 6.75S2.25 12 2.25 12z" />
-        <path strokeLinecap="round" strokeLinejoin="round"
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width={20} height={20}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75 9.75 6.75 9.75 6.75-3.75 6.75-9.75 6.75S2.25 12 2.25 12z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ) : (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        width={20}
-        height={20}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round"
-          d="M3 3l18 18M10.477 10.477A3 3 0 0113.5 13.5m3.016 1.016A9.71 9.71 0 0121.75 12s-3.75-6.75-9.75-6.75c-1.746 0-3.358.398-4.778 1.048M9.75 9.75A3 3 0 0112 9a3 3 0 013 3" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width={20} height={20}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3l18 18M10.477 10.477A3 3 0 0113.5 13.5m3.016 1.016A9.71 9.71 0 0121.75 12s-3.75-6.75-9.75-6.75c-1.746 0-3.358.398-4.778 1.048M9.75 9.75A3 3 0 0112 9a3 3 0 013 3" />
       </svg>
     )
   );
@@ -174,6 +171,20 @@ export default function SignupForm() {
               className={errors.phone ? styles.errorInput : ''}
             />
             {errors.phone && <span className={styles.errorText}>{errors.phone}</span>}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="address">Alamat</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              placeholder="Jl. Merdeka No. 123"
+              value={formData.address}
+              onChange={handleChange}
+              className={errors.address ? styles.errorInput : ''}
+            />
+            {errors.address && <span className={styles.errorText}>{errors.address}</span>}
           </div>
 
           <div className={styles.formGroup}>
