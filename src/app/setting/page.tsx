@@ -28,7 +28,7 @@ const SettingPage = () => {
 
   const fetchUserProfile = async (token: string): Promise<void> => {
     try {
-      const res: Response = await fetch('https://portal.lagajawa.site/api/users', {
+      const res: Response = await fetch('https://portal.lagajawa.site/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
