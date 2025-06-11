@@ -31,6 +31,7 @@ const SettingPage = () => {
       const res: Response = await fetch('https://portal.lagajawa.site/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
         },
       });
 
