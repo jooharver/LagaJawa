@@ -28,9 +28,10 @@ const SettingPage = () => {
 
   const fetchUserProfile = async (token: string): Promise<void> => {
     try {
-      const res: Response = await fetch('/api/user/profile', {
+      const res: Response = await fetch('https://portal.lagajawa.site/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
         },
       });
 
@@ -49,16 +50,30 @@ const SettingPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggingOut(true);
-    setTimeout(() => {
-      localStorage.removeItem('token');
-      setIsLoggedIn(false);
-      setUserData({ name: '', email: '', phone: '' });
-      setIsLoggingOut(false);
-      router.push('/login');
-    }, 1000);
-  };
+  const handleLogout = async () => {
+  setIsLoggingOut(true);
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await fetch('https://portal.lagajawa.site/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // tetap hapus token walau response error
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUserData({ name: '', email: '', phone: '' });
+    router.push('/login');
+  } catch (err) {
+    console.error('Logout gagal:', err);
+  } finally {
+    setIsLoggingOut(false);
+  }
+};
+
 
   return (
     <div className={styles.container}>

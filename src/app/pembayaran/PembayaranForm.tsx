@@ -68,11 +68,15 @@ export default function PembayaranPage() {
     let transactionId: number | null = null;
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('Token tidak ditemukan. Anda harus login terlebih dahulu.');
+const token = localStorage.getItem('token');
+if (!token) throw new Error('Token tidak ditemukan. Anda harus login terlebih dahulu.');
 
-      const decoded = jwtDecode<JwtPayload>(token);
-      const userId = decoded.userId;
+const userString = localStorage.getItem('user');
+if (!userString) throw new Error('Data user tidak ditemukan di localStorage.');
+
+const user = JSON.parse(userString);
+const userId = user.id;
+
 
       const transactionPayload = {
         user_id: userId,
