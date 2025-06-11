@@ -1,7 +1,7 @@
 .container {
   display: flex;
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #ffffff;
 }
 .container h1 {
   font-size: 2rem;
@@ -309,7 +309,11 @@
   }
   
   .slideContent {
-    padding: 1.5rem;
+    padding: 1.5rem; 
+  }
+  .loginSection {
+    background-color: white;
+    margin-bottom: 140px;
   }
 
   

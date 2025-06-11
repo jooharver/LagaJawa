@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styles from './transaction.module.css';
 import { useRouter } from "next/navigation";
 
@@ -22,7 +21,7 @@ export default function Transactions() {
   const [isLoading, setIsLoading] = useState(true);
 
   const mapPaymentStatusLabel = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'waiting': return 'Menunggu Pembayaran';
       case 'paid': return 'Sudah Dibayar';
       case 'failed': return 'Gagal Bayar';
@@ -31,37 +30,41 @@ export default function Transactions() {
   };
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token tidak ditemukan");
-        setIsLoading(false);
+  const fetchTransactions = async () => {
+    const token = localStorage.getItem('token');
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('https://portal.lagajawa.site/api/transactions', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Gagal fetch:', res.status, errorText);
+        setTransactions([]);
         return;
       }
 
-      try {
-        setIsLoading(true);
-        const res = await axios.get("/api/riwayat-transaksi", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            ...(selectedDate ? { tanggal: selectedDate } : {}),
-            ...(paymentStatusFilter ? { payment_status: paymentStatusFilter } : {}),
-          },
-        });
+      const result = await res.json();
+      console.log('Hasil transaksi:', result);
 
-        setTransactions(res.data.data as Transaction[]);
-      } catch (err) {
-        console.error("Gagal mengambil data transaksi:", err);
-        setTransactions([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      const data = Array.isArray(result.data?.data) ? result.data.data : [];
+      setTransactions(data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setTransactions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchTransactions();
-  }, [selectedDate, paymentStatusFilter]);
+  fetchTransactions();
+}, [selectedDate, paymentStatusFilter]);
+
 
   return (
     <div className={styles.container}>
@@ -93,32 +96,31 @@ export default function Transactions() {
       ) : (
         <div className={styles.cardContainer}>
           {transactions.map((trx) => (
-  <div key={trx.id_transaction} className={styles.card}>
-    <div className={styles.cardHeader}>
-      <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
-      <span className={`${styles.status} ${styles[trx.payment_status]}`}>
-        {mapPaymentStatusLabel(trx.payment_status)}
-      </span>
-    </div>
-    <div className={styles.detailsGrid}>
-      <div>No Pemesanan: {trx.no_pemesanan}</div>
-      <div>Metode: {trx.payment_method.toUpperCase()}</div>
-      <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
-      <div>
-        Dibayar: {trx.payment_status === 'paid' 
-          ? (trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Sudah Dibayar') 
-          : 'Belum Dibayar'}
-      </div>
-    </div>
-    <button
-      onClick={() => router.push(`/transactions/${trx.id_transaction}`)}
-      className={styles.detailButton}
-    >
-      Lihat Rincian
-    </button>
-  </div>
-))}
-
+            <div key={trx.id_transaction} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
+                <span className={`${styles.status} ${styles[trx.payment_status]}`}>
+                  {mapPaymentStatusLabel(trx.payment_status)}
+                </span>
+              </div>
+              <div className={styles.detailsGrid}>
+                <div>No Pemesanan: {trx.no_pemesanan}</div>
+                <div>Metode: {trx.payment_method.toUpperCase()}</div>
+                <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
+                <div>
+                  Dibayar: {trx.payment_status === 'paid'
+                    ? (trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Sudah Dibayar')
+                    : 'Belum Dibayar'}
+                </div>
+              </div>
+              <button
+                onClick={() => router.push(`/transactions/${trx.id_transaction}`)}
+                className={styles.detailButton}
+              >
+                Lihat Rincian
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -8,7 +8,7 @@ type BookingItem = {
   id: number;
   booking_date: string;
   time_slots: string[];
-  price?: number; // pastikan API kirim price per lapangan
+  price?: number;
   court: {
     name: string;
   };
@@ -35,11 +35,12 @@ export default function DetailTransaksiPage() {
     const fetchDetail = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) return;
+        if (!token || !id) return;
 
-        const res = await axios.get(`/api/transaction/${id}`, {
+        const res = await axios.get(`https://portal.lagajawa.site/api/transactions/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
           },
         });
 
@@ -51,7 +52,7 @@ export default function DetailTransaksiPage() {
       }
     };
 
-    if (id) fetchDetail();
+    fetchDetail();
   }, [id]);
 
   if (loading) return <p>Memuat rincian transaksi...</p>;
@@ -72,7 +73,6 @@ export default function DetailTransaksiPage() {
           {booking.status}
         </span>
       </p>
-
       <p>
         <strong>Dibayar Pada:</strong>{' '}
         {booking.paid_at && booking.paid_at !== 'null'
@@ -93,7 +93,6 @@ export default function DetailTransaksiPage() {
               </li>
             ))}
           </ul>
-
           <hr />
           <p><strong>Total Harga:</strong> Rp {booking.total.toLocaleString('id-ID')}</p>
         </>
