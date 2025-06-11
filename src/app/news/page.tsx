@@ -23,7 +23,7 @@ const NewsMenu = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch('/api/news');
+        const res = await fetch('https://portal.lagajawa.site/api/news');
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
 
@@ -75,7 +75,8 @@ const NewsMenu = () => {
             <div key={item.id_news} className={styles.newsItem}>
               <div className={styles.imageButtonWrapper}>
                 <Image
-                  src={`http://localhost:8000/storage/${item.image}`}
+                  src={`https://portal.lagajawa.site/storage/${item.image}`}  // ✅ untuk production
+
                   alt={item.judul}
                   width={300}
                   height={200}

@@ -115,7 +115,7 @@ export default function BookingPage() {
   }, [totalPrice]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/courts')
+    fetch('https://portal.lagajawa.site/api/courts')
       .then(res => res.json())
       .then(result => {
         console.log('Response dari API courts:', result);
@@ -221,7 +221,14 @@ export default function BookingPage() {
         <div className={styles.typingText}>
           <TypingText texts={['Booking bulanan atau event?', 'Hubungi kami untuk diskon khusus!']} />
         </div>
-        <button className={styles.contactBtn}>Hubungi Kami</button>
+            <button
+              className={styles.contactBtn}
+              onClick={() => window.open("https://wa.me/6287870463683", "_blank")}
+            >
+              Hubungi Kami
+            </button>
+
+
       </section>
 
       <div className={styles.dateSelector}>

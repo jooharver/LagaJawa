@@ -1,10 +1,10 @@
 .container {
-  margin-top: 100px;
+  margin-top: 80px;
   display: flex;
   max-height: 100vh;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #ffffff;
   padding: 2rem;
 }
 
@@ -61,7 +61,8 @@
 }
 
 .formGroup input {
-  padding: 0.875rem 1rem;
+  padding: 0.875rem 1rem; 
+  width: 92%;
   border: 2px solid #edf2f7;
   border-radius: 8px;
   font-size: 1rem;
@@ -178,4 +179,63 @@
 
 .footer a:hover {
   text-decoration: underline;
+}
+.passwordWrapper {
+  position: relative;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #555;
+}
+
+.toggleButton:hover {
+  color: #000;
+}
+
+.spinnerIcon {
+  animation: spin 1s linear infinite;
+  width: 20px;
+  height: 20px;
+  stroke: white;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 80px;
+    margin-bottom: 140px;;
+    
+  }
+
+  .card {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .header h2 {
+    font-size: 1.5rem;
+  }
+
+  .formGroup input {
+    width: 91%;
+  }
+
+  .submitButton {
+    height: 40px;
+    font-size: 0.9rem;
+  }
 }

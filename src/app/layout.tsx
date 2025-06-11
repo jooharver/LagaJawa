@@ -21,7 +21,9 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <link rel="icon" href="/favicon.ico" />
       </head>
+
       <body className={poppins.className}>
         <Navbar />
         <main className="pt-20">

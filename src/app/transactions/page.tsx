@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styles from './transaction.module.css';
 import { useRouter } from "next/navigation";
 
@@ -16,13 +15,12 @@ type Transaction = {
 
 export default function Transactions() {
   const router = useRouter();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [originalTransactions, setOriginalTransactions] = useState<Transaction[]>([]);
   const [paymentStatusFilter, setPaymentStatusFilter] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const mapPaymentStatusLabel = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'waiting': return 'Menunggu Pembayaran';
       case 'paid': return 'Sudah Dibayar';
       case 'failed': return 'Gagal Bayar';
@@ -32,36 +30,44 @@ export default function Transactions() {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token tidak ditemukan");
-        setIsLoading(false);
-        return;
-      }
+      const token = localStorage.getItem('token');
+      setIsLoading(true);
 
       try {
-        setIsLoading(true);
-        const res = await axios.get("/api/riwayat-transaksi", {
+        const res = await fetch('https://portal.lagajawa.site/api/transactions', {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
-          params: {
-            ...(selectedDate ? { tanggal: selectedDate } : {}),
-            ...(paymentStatusFilter ? { payment_status: paymentStatusFilter } : {}),
+            Accept: 'application/json',
           },
         });
 
-        setTransactions(res.data.data as Transaction[]);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Gagal fetch:', res.status, errorText);
+          setOriginalTransactions([]);
+          return;
+        }
+
+        const result = await res.json();
+        console.log('Hasil transaksi:', result);
+
+        const data = Array.isArray(result.data?.data) ? result.data.data : [];
+        setOriginalTransactions(data);
       } catch (err) {
-        console.error("Gagal mengambil data transaksi:", err);
-        setTransactions([]);
+        console.error('Fetch error:', err);
+        setOriginalTransactions([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchTransactions();
-  }, [selectedDate, paymentStatusFilter]);
+  }, []);
+
+  // Filter hanya berdasarkan status pembayaran
+  const filteredTransactions = originalTransactions.filter((trx) =>
+    paymentStatusFilter ? trx.payment_status === paymentStatusFilter : true
+  );
 
   return (
     <div className={styles.container}>
@@ -78,47 +84,40 @@ export default function Transactions() {
           <option value="paid">Sudah Dibayar</option>
           <option value="failed">Gagal Bayar</option>
         </select>
-        <input
-          type="date"
-          className={styles.input}
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
       </div>
 
       {isLoading ? (
         <p className={styles.loading}>Loading...</p>
-      ) : transactions.length === 0 ? (
-        <p className={styles.emptyMessage}>Kamu belum memiliki riwayat transaksi.</p>
+      ) : filteredTransactions.length === 0 ? (
+        <p className={styles.emptyMessage}>Tidak ada transaksi dengan status yang dipilih.</p>
       ) : (
         <div className={styles.cardContainer}>
-          {transactions.map((trx) => (
-  <div key={trx.id_transaction} className={styles.card}>
-    <div className={styles.cardHeader}>
-      <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
-      <span className={`${styles.status} ${styles[trx.payment_status]}`}>
-        {mapPaymentStatusLabel(trx.payment_status)}
-      </span>
-    </div>
-    <div className={styles.detailsGrid}>
-      <div>No Pemesanan: {trx.no_pemesanan}</div>
-      <div>Metode: {trx.payment_method.toUpperCase()}</div>
-      <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
-      <div>
-        Dibayar: {trx.payment_status === 'paid' 
-          ? (trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Sudah Dibayar') 
-          : 'Belum Dibayar'}
-      </div>
-    </div>
-    <button
-      onClick={() => router.push(`/transactions/${trx.id_transaction}`)}
-      className={styles.detailButton}
-    >
-      Lihat Rincian
-    </button>
-  </div>
-))}
-
+          {filteredTransactions.map((trx) => (
+            <div key={trx.id_transaction} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span>{new Date(trx.created_at).toLocaleString('id-ID')}</span>
+                <span className={`${styles.status} ${styles[trx.payment_status]}`}>
+                  {mapPaymentStatusLabel(trx.payment_status)}
+                </span>
+              </div>
+              <div className={styles.detailsGrid}>
+                <div>No Pemesanan: {trx.no_pemesanan}</div>
+                <div>Metode: {trx.payment_method.toUpperCase()}</div>
+                <div>Total: Rp {trx.total_amount.toLocaleString('id-ID')}</div>
+                <div>
+                  Dibayar: {trx.payment_status === 'paid'
+                    ? (trx.paid_at ? new Date(trx.paid_at).toLocaleString('id-ID') : 'Sudah Dibayar')
+                    : 'Belum Dibayar'}
+                </div>
+              </div>
+              <button
+                onClick={() => router.push(`/transactions/${trx.id_transaction}`)}
+                className={styles.detailButton}
+              >
+                Lihat Rincian
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>
