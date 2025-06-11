@@ -114,10 +114,11 @@
 
 .socialIcons {
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  justify-content: start;
-  column-gap: 12rem; /* Sesuaikan jarak antar ikon */
-  margin-top: 0.5rem;
+  gap: 2rem; /* sedikit lebih kecil untuk estetika */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  justify-items: center; /* membuat ikon rata tengah */
+  align-items: center;
+  padding: 1rem;
 }
 
 

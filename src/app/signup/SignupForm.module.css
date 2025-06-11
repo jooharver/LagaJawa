@@ -216,7 +216,7 @@
 /* Responsive styles */
 @media (max-width: 768px) {
   .container {
-    margin: 0 auto 0 auto;
+    margin: 60 auto 60 auto;
     
   }
 
