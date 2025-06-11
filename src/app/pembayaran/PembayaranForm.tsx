@@ -152,7 +152,7 @@ const userId = user.id;
 
       if (paymentMethod === 'cod') {
         alert('Transaksi berhasil dibuat dengan metode COD.\nSilakan tunggu konfirmasi admin.');
-        window.location.href = `/pembayaran/status?order_id=${snapData.data.transaction.no_pemesanan}`;
+        window.location.href = `https://lagajawa.site/pembayaran/status?order_id=${snapData.data.transaction.no_pemesanan}`;
       } else if (snapData.data.snap_token) {
         window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${snapData.data.snap_token}`;
       } else {

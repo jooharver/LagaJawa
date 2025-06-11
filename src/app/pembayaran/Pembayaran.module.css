@@ -2,8 +2,8 @@
     background-color: #f2f2f2;
     min-height: 100vh;
     padding: 2rem;
-    margin-top: 100px;
-    margin-bottom: 130px;
+    margin-top: 70px;
+    margin-bottom: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
@@ -172,8 +172,8 @@
   @media (max-width: 768px) {
     .pageWrapper {
       padding: 1rem;
-      margin-top: 80px;
-      margin-bottom: 100px;
+      margin-top: 0;
+      margin-bottom: 70px;
     }
   
     .card,
