@@ -26,13 +26,15 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="font-poppins"> {/* Menggunakan font Poppins untuk seluruh body */}
+
+      <body className={poppins.className}>
         <Navbar />
+        <WhatsAppPopup />
         <main className="pt-20">
           {children}
         </main>
-        <WhatsAppPopup /> {/* Ini akan menampilkan komponen pop-up di semua halaman */}
       </body>
     </html>
   );
