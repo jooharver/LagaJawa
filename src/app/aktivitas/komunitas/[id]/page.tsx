@@ -21,7 +21,7 @@ export default function KomunitasDetailPage() {
   const [komunitas, setKomunitas] = useState<Komunitas | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/komunitas/${id}`)
+    fetch(`https://portal.lagajawa.site/api/komunitas/${id}`)
       .then((res) => res.json())
       .then((response) => {
         if (response && response.data) {
@@ -38,7 +38,7 @@ export default function KomunitasDetailPage() {
         <div className={styles.container}>
           <div className={styles.bannerSection}>
             <Image
-              src={`http://localhost:8000/storage/${komunitas.image_banner}`}
+              src={`https://portal.lagajawa.site/storage/${komunitas.image_banner}`}
               alt="Banner"
               width={800}
               height={250}
@@ -46,7 +46,7 @@ export default function KomunitasDetailPage() {
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
             <Image
-              src={`http://localhost:8000/storage/${komunitas.image_logo}`}
+              src={`https://portal.lagajawa.site/storage/${komunitas.image_logo}`}
               alt="Logo"
               width={120}
               height={120}
@@ -77,7 +77,7 @@ export default function KomunitasDetailPage() {
           <div className={styles.gallery}>
             <h3>Galeri</h3>
             <Image
-              src={`http://localhost:8000/storage/${komunitas.image}`}
+              src={`https://portal.lagajawa.site/storage/${komunitas.image}`}
               alt="Galeri"
               width={600}
               height={400}

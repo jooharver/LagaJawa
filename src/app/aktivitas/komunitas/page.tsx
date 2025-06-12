@@ -20,7 +20,7 @@ export default function KomunitasPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/komunitas')
+    fetch('https://portal.lagajawa.site/api/komunitas')
       .then((res) => res.json())
       .then((response) => {
         // Ambil data komunitas yang sebenarnya ada di response.data.data
@@ -75,7 +75,7 @@ export default function KomunitasPage() {
             }}
           >
             <Image
-              src={`http://localhost:8000/storage/${item.image_logo}`}
+              src={`https://portal.lagajawa.site/storage/${item.image_logo}`}
               alt={item.title}
               width={150}
               height={150}

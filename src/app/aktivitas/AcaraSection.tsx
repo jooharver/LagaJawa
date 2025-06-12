@@ -30,7 +30,7 @@ export default function AcaraSection({ acara }: AcaraSectionProps) {
             className={styles.aktivitasCard}
           >
             <Image
-              src={`http://localhost:8000/storage/${item.image}`}
+              src={`https://portal.lagajawa.site/storage/${item.image}`}
               alt={item.judul}
               width={100} // Sesuaikan ukuran sesuai styling
               height={100}

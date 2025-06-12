@@ -28,7 +28,7 @@ export default function KomunitasSection({ komunitas }: KomunitasSectionProps) {
             className={styles.aktivitasCard}
           >
             <Image
-              src={`http://localhost:8000/storage/${item.image_logo}`}
+              src={`https://portal.lagajawa.site/storage/${item.image_logo}`}
               alt={item.title}
               width={100} // Sesuaikan ukuran sesuai kebutuhan styling
               height={100}
