@@ -1,7 +1,6 @@
 /* Aktivitas.module.css */
 
 .container {
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -12,7 +11,6 @@
 }
 
 .heroSection {
-  overflow-x: hidden;
   display: flex;
   height: 100vh;
   width: 99vw;
@@ -28,28 +26,25 @@
 }
 
 .heroContent {
-  padding: 0 5%;
+  padding-left: 100px;
+  padding-right: 100px;
   max-width: 1440px;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .heroOverlay {
-  /* max-width: 600px; */
+  max-width: 600px;
   z-index: 2;
 }
 
 .heroText h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  word-break: break-word;
 }
 
 .heroText p {
   font-size: 1.25rem;
-  /* max-width: 500px; */
-  line-height: 1.5;
-  word-break: break-word;
+  max-width: 500px;
 }
 
 .section {
@@ -120,7 +115,7 @@
 .moreButton {
   margin-top: 1rem;
   display: inline-block;
-  background-color: #1ca977;
+  background-color: #00920c;
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -130,7 +125,6 @@
 
 .moreButton:hover {
   background-color: #0f6600;
-  transform: translateY(-3px);
 }
 
 @media (max-width: 768px) {
@@ -142,8 +136,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: left;
-    max-height: 550px;
+    text-align: center;
+    height: auto;
     width: 100vw;
     padding: 60px 20px;
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 80%, transparent),
@@ -153,10 +147,7 @@
   }
 
   .heroContent {
-    padding-left: 10%;
-    padding-right: 10%;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 0 20px;
   }
 
   .heroOverlay {
@@ -169,8 +160,6 @@
 
   .heroText p {
     font-size: 1rem;
-    line-height: 1.4;
-    max-width: 90%;
   }
 
   .itemGrid {

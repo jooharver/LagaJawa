@@ -16,11 +16,7 @@ const SettingPage = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [userData, setUserData] = useState<UserProfile>({
-    name: '',
-    email: '',
-    phone: '',
-  });
+  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,17 +28,14 @@ const SettingPage = () => {
 
   const fetchUserProfile = async (token: string): Promise<void> => {
     try {
-      const res: Response = await fetch('https://portal.lagajawa.site/api/auth/profile', {
+      const res: Response = await fetch('/api/user/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
         },
       });
 
       if (res.ok) {
-        const json = await res.json();
-        const data: UserProfile = json.data;
-
+        const data: UserProfile = await res.json();
         setUserData({
           name: data.name,
           email: data.email,
@@ -56,26 +49,15 @@ const SettingPage = () => {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setIsLoggingOut(true);
-    const token = localStorage.getItem('token');
-
-    try {
-      await fetch('https://portal.lagajawa.site/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (err) {
-      console.error('Logout gagal:', err);
-    } finally {
+    setTimeout(() => {
       localStorage.removeItem('token');
       setIsLoggedIn(false);
       setUserData({ name: '', email: '', phone: '' });
-      router.push('/login');
       setIsLoggingOut(false);
-    }
+      router.push('/login');
+    }, 1000);
   };
 
   return (
@@ -87,6 +69,7 @@ const SettingPage = () => {
 
         {isLoggedIn ? (
           <>
+            {/* Info Akun */}
             <section className={styles.profileSection}>
               <h2>Informasi Akun</h2>
               <div className={styles.infoRow}>
@@ -140,19 +123,21 @@ const SettingPage = () => {
             </section>
           </>
         ) : (
-          <section className={styles.loginSection}>
-            <button
-              className={styles.loginButton}
-              type="button"
-              onClick={() => router.push('/login')}
-            >
-              <LogIn size={18} />
-              LOGIN / DAFTAR
-            </button>
-            <p className={styles.loginNote}>
-              Masuk atau daftar untuk mulai memesan lapangan
-            </p>
-          </section>
+          <>
+            <section className={styles.loginSection}>
+              <button
+                className={styles.loginButton}
+                type="button"
+                onClick={() => router.push('/login')}
+              >
+                <LogIn size={18} />
+                LOGIN / DAFTAR
+              </button>
+              <p className={styles.loginNote}>
+                Masuk atau daftar untuk mulai memesan lapangan
+              </p>
+            </section>
+          </>
         )}
 
         <div className={styles.divider}></div>
@@ -191,7 +176,6 @@ const SettingPage = () => {
             </a>
           </div>
         </section>
-
         <footer className={styles.footer}>
           <p>&copy; {new Date().getFullYear()} LJ Futsal. All rights reserved.</p>
         </footer>

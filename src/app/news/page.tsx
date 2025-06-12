@@ -20,30 +20,26 @@ const NewsMenu = () => {
   const [filteredNews, setFilteredNews] = useState<NewsItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'event' | 'announcement'>('all');
 
- useEffect(() => {
-  const fetchNews = async () => {
-    try {
-      const res = await fetch('https://portal.lagajawa.site/api/news');
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch('/api/news');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
 
-      const newsArray = data?.data?.data;
-
-      if (Array.isArray(newsArray)) {
-        setNews(newsArray);
-      } else {
-        console.error('Unexpected response format:', data);
+        if (Array.isArray(data)) {
+          setNews(data);
+        } else {
+          console.error('Unexpected response format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching news:', error);
         setNews([]);
       }
-    } catch (error) {
-      console.error('Error fetching news:', error);
-      setNews([]);
-    }
-  };
+    };
 
-  fetchNews();
-}, []);
-
+    fetchNews();
+  }, []);
 
   useEffect(() => {
     if (filter === 'all') {
@@ -79,8 +75,7 @@ const NewsMenu = () => {
             <div key={item.id_news} className={styles.newsItem}>
               <div className={styles.imageButtonWrapper}>
                 <Image
-                  src={`https://portal.lagajawa.site/storage/${item.image}`}  // ✅ untuk production
-
+                  src={`http://localhost:8000/storage/${item.image}`}
                   alt={item.judul}
                   width={300}
                   height={200}

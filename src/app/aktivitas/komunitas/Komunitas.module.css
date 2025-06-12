@@ -1,5 +1,4 @@
 .container {
-  overflow-x: hidden;
   max-width: 900px;
   margin: 0 auto;
   margin-bottom: 100px;
@@ -66,7 +65,7 @@
   padding: 8px 16px;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #1ca977;
+  background-color: #00920c;
   color: white;
   border: none;
   border-radius: 8px;
@@ -75,11 +74,6 @@
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.pagination button:hover {
-  background-color: #0f6600;
-  transform: translateY(-3px);
 }
 
 /* Responsif tambahan untuk layar kecil */

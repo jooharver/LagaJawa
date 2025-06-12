@@ -1,15 +1,17 @@
 .container {
+  margin-top:   100px;
   max-width: 800px;
-  margin: 70 auto 0 auto; /* center horizontally */
+  margin: 100px auto 0px auto; /* center horizontally */
   padding: 1rem;
   font-family: Poppins, sans-serif;
   border-radius: 8px;
   max-height: 100dvh;
+  margin-bottom: 100px;
 }
 
 .mainContent {
   background: #ffffff;
-
+  padding: 1rem 2rem;
   border-radius: 8px;
 }
 
@@ -113,14 +115,10 @@
 }
 
 .socialIcons {
-  display: grid;
-  gap: 2rem; /* sedikit lebih kecil untuk estetika */
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  justify-items: center; /* membuat ikon rata tengah */
-  align-items: center;
-  padding: 1rem;
+  display: flex;
+  gap: 10rem;
+  margin-top: 0.5rem;
 }
-
 
 .socialLink {
   background-color: #ffffff;
@@ -137,7 +135,7 @@
 
 }
 .profileSection {
-  padding-top: 1rem;
+  padding: 1rem;
   background-color: #fff;
   border-radius: 8px;
 }
@@ -181,7 +179,7 @@
   }
   
   .socialIcons {
-    gap: 9.5rem;
+    gap: 4rem;
   }
   
   .tableHeader {
@@ -190,13 +188,10 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .socialIcons {
     flex-direction: column;
-    gap: 0.5rem;
-  }
-  .container {
-   margin: 0 auto 0 auto; /* center horizontally */
+    gap: 1rem;
   }
 
   .contactButton,

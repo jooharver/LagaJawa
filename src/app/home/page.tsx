@@ -11,7 +11,7 @@ useEffect(() => {
     `.${styles.judulHero}, .${styles.deskripsiHero}, .${styles.judulFasilitas}, .${styles.deskripsiFasilitas},
      .${styles.featureCard}, .${styles.judulGallery}, .${styles.deskripsiGallery}, .${styles.galleryBanner},
      .${styles.judulBooking}, .${styles.deskripsiBooking}, .${styles.stepCard}, .${styles.judulLokasi},
-     .${styles.deskripsiLokasi}, .${styles.judulAlamat}, .${styles.deskripsiAlamat}`
+     .${styles.deskripsiLokasi}`
   );
 
   const observer = new IntersectionObserver(
@@ -52,13 +52,8 @@ useEffect(() => {
               <h1>LAGA JAWA FUTSAL</h1>
             </div>
             <div className={styles.deskripsiHero}>
-              <h3>
-                Pesan Lapangan Futsal dengan
-                <br className={styles.mobileBreak} />
-                Mudah dan Cepat
-              </h3>
+              <h3>Pesan Lapangan Futsal dengan Mudah dan Cepat</h3>
             </div>
-
           </div>
         </div>
 
@@ -261,48 +256,47 @@ useEffect(() => {
         {/* END SECTION ALUR PEMESANAN */}
 
         {/* SECTION LOKASI */}
-        <section className={styles.section}>
-          <div className={styles.judulAlamat}>
+        <section className={styles.lokasiSection}>
+          <div className={styles.judulLokasi}>
             <h1>Lokasi</h1>
           </div>
-          <div className={styles.deskripsiAlamat}>
-            <h3>Temukan lokasi kami di pusat kota yang strategis dengan akses jalan raya dan dekat dengan fasilitas umum</h3>
+          <div className={styles.deskripsiLokasi}>
+            <h3>Ikuti langkah mudah berikut untuk memesan lapangan futsal di <strong>LAGA JAWA FUTSAL</strong></h3>
           </div>
 
-          <div className={styles.content}>
-            <div className={styles.infoBox}>
-              <div className={styles.photoBox}>
-                <div className={styles.logo}></div>
+        <div className={styles.contentLokasi}>
+          <div className={styles.mapFrame}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.5026830854117!2d112.6161209!3d-7.946891200000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sid!2sid!4v1745550213010!5m2!1sid!2sid"
+              loading="lazy"
+              width="100%"
+              height="100%"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+
+          <div className={styles.detailAlamat}>
+            <div className={styles.fotoContainer}>
+              <Image src="/images/toilet.jpeg" alt="Gedung" width={200} height={80} className={styles.fotoGedung} />
+              <div className={styles.logoOverlay}>
+                <Image src="/images/logo.png" alt="Logo" width={80} height={30} />
               </div>
-              <p className={styles.address}>
-                Alamat : Jl. Soekarno Hatta 17,<br />
-                Jatimulyo, Lowokwaru, <br />
-                Kota Malang - 65141
-              </p>
-              <a
-                href="https://maps.app.goo.gl/jY6i1mvKwaoENQ9C7?g_st=iw"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.mapButton}
-              >
-                Go to Map
-              </a>
             </div>
-
-            <div className={styles.mapBox}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.5026830854117!2d112.6161209!3d-7.946891200000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sid!2sid!4v1745550213010!5m2!1sid!2sid"
-                width="400px"
-                height="400px"
-                style={{ border: 0, borderRadius: '8px' }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+            <div className={styles.rincianAlamat}>
+              <strong>Alamat :</strong> Jl. Soekarno Hatta 17, Lowokwaru, Kota Malang - 65142
             </div>
-
+            <a
+              href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.5026830854117!2d112.6161209!3d-7.946891200000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sid!2sid!4v1745550213010!5m2!1sid!2sid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.buttonMap}
+            >
+              Go to Map
+            </a>
           </div>
-        </section>
+        </div>
+      </section>
       
     
       </div>

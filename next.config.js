@@ -4,13 +4,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'portal.lagajawa.site',  
+        hostname: 'localhost',
         port: '8000',
-        pathname: '/storage/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'portal.lagajawa.site',
         pathname: '/storage/**',
       },
     ],
@@ -22,7 +17,7 @@ const nextConfig = {
         destination: '/home',
         permanent: true,
       },
-    ];
+    ]
   },
 };
 
