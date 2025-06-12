@@ -1,4 +1,5 @@
 .container {
+  overflow-x: hidden;
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1rem;
@@ -94,7 +95,7 @@
 }
 
 .paginationSection button {
-  background-color: #00920c;
+  background-color: #1ca977;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -106,6 +107,11 @@
 .paginationSection button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.paginationSection button:hover {
+  background-color: #0f6600;
+  transform: translateY(-3px);
 }
 
 .paginationSection span {
