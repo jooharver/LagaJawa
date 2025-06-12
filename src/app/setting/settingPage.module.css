@@ -1,6 +1,6 @@
 .container {
   max-width: 800px;
-  margin: 70 auto 0 auto; /* center horizontally */
+  margin: 100px auto 0px auto; /* center horizontally */
   padding: 1rem;
   font-family: Poppins, sans-serif;
   border-radius: 8px;
