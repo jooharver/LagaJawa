@@ -197,6 +197,7 @@
   background-color: #4CAF50;
   border-radius: 50%;
   border: 2px solid white;
+  display: none;
 }
 
 .wwsPopupSupportPersonInfoWrapper {

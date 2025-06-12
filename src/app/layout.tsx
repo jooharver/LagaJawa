@@ -31,11 +31,11 @@ export default function RootLayout({
 
       <body className={poppins.className}>
         <Navbar />
-        <WhatsAppPopup />
         <main className="pt-20">
           {children}
         </main>
       </body>
+      <WhatsAppPopup />
     </html>
   );
 }
