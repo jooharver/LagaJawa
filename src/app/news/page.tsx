@@ -20,26 +20,30 @@ const NewsMenu = () => {
   const [filteredNews, setFilteredNews] = useState<NewsItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'event' | 'announcement'>('all');
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const res = await fetch('https://portal.lagajawa.site/api/news');
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
+ useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const res = await fetch('https://portal.lagajawa.site/api/news');
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
 
-        if (Array.isArray(data)) {
-          setNews(data);
-        } else {
-          console.error('Unexpected response format:', data);
-        }
-      } catch (error) {
-        console.error('Error fetching news:', error);
+      const newsArray = data?.data?.data;
+
+      if (Array.isArray(newsArray)) {
+        setNews(newsArray);
+      } else {
+        console.error('Unexpected response format:', data);
         setNews([]);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      setNews([]);
+    }
+  };
 
-    fetchNews();
-  }, []);
+  fetchNews();
+}, []);
+
 
   useEffect(() => {
     if (filter === 'all') {

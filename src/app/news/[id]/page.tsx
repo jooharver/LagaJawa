@@ -27,7 +27,7 @@ const NewsDetailPage = () => {
 
     const fetchNews = async () => {
       try {
-        const res = await fetch(`/api/news/${id}`);
+        const res = await fetch(`https://portal.lagajawa.site/api/news/${id}`);
         if (!res.ok) throw new Error('Berita tidak ditemukan');
         const json = await res.json();
         setNews(json.data); // 👈 ambil properti 'data' di respons API
@@ -59,7 +59,7 @@ const NewsDetailPage = () => {
         <div className={styles.separator}></div>
           <div className={styles.imageWrapper}>
             <Image
-              src={`http://localhost:8000/storage/${news.image}`}
+              src={`https://portal.lagajawa.site/storage/${news.image}`}
               alt={news.judul}
               fill
               className={styles.image}

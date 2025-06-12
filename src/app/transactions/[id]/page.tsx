@@ -32,28 +32,30 @@ export default function DetailTransaksiPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token || !id) return;
+  const fetchDetail = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token || !id) return;
 
-        const res = await axios.get(`https://portal.lagajawa.site/api/transactions/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
+      const res = await axios.get(`https://portal.lagajawa.site/api/transactions/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
 
-        setBooking(res.data.data);
-      } catch (err) {
-        console.error('Gagal ambil data booking:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      console.log('Data transaksi detail:', res.data); // debug
+      setBooking(res.data.data);
+    } catch (err) {
+      console.error('Gagal ambil data booking:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDetail();
-  }, [id]);
+  fetchDetail();
+}, [id]);
+
 
   if (loading) return <p>Memuat rincian transaksi...</p>;
   if (!booking) return <p>Data tidak ditemukan atau Anda belum login.</p>;
