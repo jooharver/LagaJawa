@@ -31,7 +31,7 @@ export default function DetailAcaraPage() {
   useEffect(() => {
     async function fetchDetail() {
       try {
-        const res = await fetch(`http://localhost:8000/api/news/${id}`);
+        const res = await fetch(`https://portal.lagajawa.site/api/news/${id}`);
         const json = await res.json();
 
         if (json.data.kategori !== "event") {
@@ -59,7 +59,7 @@ export default function DetailAcaraPage() {
         <div className={styles.container}>
           <section className={styles.imageSection}>
             <Image
-              src={`http://localhost:8000/storage/${event.image}`}
+              src={`https://portal.lagajawa.site/storage/${event.image}`}
               alt={event.judul}
               width={600}    // sesuaikan ukuran yang diinginkan
               height={400}   // sesuaikan ukuran yang diinginkan
