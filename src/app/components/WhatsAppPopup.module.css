@@ -1,0 +1,239 @@
+
+:root {
+  --wws-primary-color: #25d366;
+  --wws-secondary-color: #128c7e;
+  --wws-text-dark: #333333;
+  --wws-text-light: #ffffff;
+  --wws-border-radius: 8px;
+  --wws-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.initialFixedTriggerButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  
+  background-color: var(--wws-primary-color);
+  color: var(--wws-text-light);
+  
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: all 0.3s ease;
+  outline: none;
+  
+  pointer-events: auto; 
+}
+
+.initialFixedTriggerButton:hover {
+  background-color: var(--wws-secondary-color);
+  transform: scale(1.05);
+}
+
+.initialFixedTriggerButton .wwsIcon { 
+  width: 40px; 
+  height: 40px; 
+  object-fit: contain; 
+}
+
+
+
+
+.wwsPopupContainer {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  z-index: 9998;
+  font-family: 'Poppins', sans-serif;
+  transform-origin: bottom right;
+}
+
+
+
+.wwsPopup {
+  position: relative;
+  width: 320px;
+  background-color: white;
+  border-radius: var(--wws-border-radius);
+  box-shadow: var(--wws-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+}
+
+.wwsGradient {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #25d366, #128c7e);
+  opacity: 0.3;
+  transition: all 0.3s ease-in-out;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.wwsPopupHeader {
+  background-color: var(--wws-primary-color);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  min-height: 40px;
+}
+
+.wwsPopupCloseBtn {
+  background-color: var(--wws-primary-color);
+  color: var(--wws-text-light);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-size: 1.2rem;
+  box-shadow: var(--wws-shadow);
+  transition: background-color 0.2s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.wwsPopupCloseBtn:hover {
+  background-color: var(--wws-secondary-color);
+}
+
+.wwsIcon {
+  font-size: 1rem; 
+}
+
+.wwsPopupBody {
+  padding: 15px;
+  background-color: #f7f7f7;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.wwsPopupSupportWrapper {
+  background-color: white;
+  border-radius: var(--wws-border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.wwsPopupSupportAbout {
+  background-color: var(--wws-primary-color);
+  color: var(--wws-text-light);
+  padding: 10px 15px;
+  border-radius: var(--wws-border-radius) var(--wws-border-radius) 0 0;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.wwsPopupSupportPersonContainer {
+  background-color: white;
+  border-radius: var(--wws-border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.wwsPopupSupportPersonLink {
+  text-decoration: none;
+  color: var(--wws-text-dark);
+  display: block;
+  padding: 10px 15px;
+  transition: background-color 0.2s ease;
+  border-radius: var(--wws-border-radius);
+}
+
+.wwsPopupSupportPersonLink:hover {
+  background-color: #e0e0e0;
+}
+
+.wwsPopupSupportPerson {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wwsPopupSupportPersonImgWrapper {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.wwsPopupSupportPersonImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.wwsPopupSupportPersonAvailable {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.wwsPopupSupportPersonInfoWrapper {
+  flex-grow: 1;
+}
+
+.wwsPopupSupportPersonTitle {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.wwsPopupSupportPersonName {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.wwsPopupSupportPersonStatus {
+  font-size: 0.8rem;
+  color: #4CAF50;
+}
+
+.wwsBgColor {
+  background-color: var(--wws-primary-color);
+}
+
+.wwsTextColor {
+  color: var(--wws-text-light);
+}
+
+.wwsShadow {
+  box-shadow: var(--wws-shadow);
+}
+
+.wwsClearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
