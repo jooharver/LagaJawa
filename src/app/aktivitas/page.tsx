@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic';
 
 const getKomunitas = async (): Promise<Komunitas[]> => {
   try {
-    const res = await fetch('http://localhost:8000/api/komunitas', {
+    const res = await fetch('https://portal.lagajawa.site/api/komunitas', {
       cache: 'no-store',
     });
 
@@ -47,7 +47,7 @@ const getKomunitas = async (): Promise<Komunitas[]> => {
 
 const getBeritaEvent = async (): Promise<Berita[]> => {
   try {
-    const res = await fetch('http://localhost:8000/api/news', {
+    const res = await fetch('https://portal.lagajawa.site/api/news', {
       cache: 'no-store',
     });
 

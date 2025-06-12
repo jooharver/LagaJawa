@@ -25,7 +25,7 @@ export default function AcaraPage() {
     async function fetchAllEvents() {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:8000/api/news?category=event`);
+        const res = await fetch(`https://portal.lagajawa.site/api/news?category=event`);
         if (!res.ok) throw new Error("Failed to fetch data");
         const json = await res.json();
 
@@ -73,7 +73,7 @@ export default function AcaraPage() {
             >
               <div className={styles.left}>
                 <Image
-                  src={`http://localhost:8000/storage/${event.image}`}
+                  src={`https://portal.lagajawa.site/storage/${event.image}`}
                   alt={event.judul}
                   width={200}
                   height={200}
